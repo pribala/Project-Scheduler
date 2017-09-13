@@ -18,6 +18,8 @@ var config = {
       var imageUrl = "";
       var bio ="";
       var role = "";
+
+      var userObject = {};
       // connectionsRef references a specific location in our database.
       // All of our connections will be stored in this directory.
       // var connectionsRef = database.ref("/connections");
@@ -27,26 +29,35 @@ var config = {
       // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
       // var connectedRef = database.ref(".info/connected");
       // Add new value to database when add train button is clicked
+
   $("#addUser").on("click", function (event) {
     event.preventDefault();
     // Check if user is logged in before allowing to add to the database    
-      firstName = capitalizeStr($("#firstName").val().trim());
-      lastName = capitalizeStr($("#lastName").val().trim());
-      email = capitalizeStr($("#email").val().trim());
-      imageUrl = $("#imageUrl").val().trim();
-      bio = $("#bio").val().trim();
-      role = $('input[name="role"]:checked').val();
-      
+      // firstName = capitalizeStr($("#firstName").val().trim());
+      // lastName = capitalizeStr($("#lastName").val().trim());
+      // email = capitalizeStr($("#email").val().trim());
+      // imageUrl = $("#imageUrl").val().trim();
+      // bio = $("#bio").val().trim();
+      // role = $('input[name="role"]:checked').val();
+      userObject = {firstName: capitalizeStr($("#firstName").val().trim()),
+                    lastName: capitalizeStr($("#lastName").val().trim()),
+                    email:  capitalizeStr($("#email").val().trim()),
+                    imageUrl: "assets/images/"+ $("#imageUrl").val().trim(),
+                    bio: $("#bio").val().trim(),
+                    role: $('input[name="role"]:checked').val()
+                   }
       
         var myKey = firebase.database().ref().push().key;
                   
         database.ref().push({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          imageUrl: imageUrl,
-          bio : bio,
-          role: role,
+          // firstName: firstName,
+          // lastName: lastName,
+          // email: email,
+          // imageUrl: imageUrl,
+          // bio : bio,
+          // role: role,
+          // id: myKey
+          userInfo: userObject,
           id: myKey
         });
                                 
@@ -84,12 +95,13 @@ var config = {
   });
 
   function renderData(sv) {
+    console.log(sv);
     var col = $("<div>");
     col.addClass("column");
     var image = $("<img>");
-    image.attr("src", sv.imageUrl);
+    image.attr("src", sv.userInfo.imageUrl);
     var heading = $("<h5>");
-    heading.html(sv.firstName+ ""+sv.lastName);
+    heading.html(sv.userInfo.firstName+ ""+sv.userInfo.lastName);
     col.append(image).append(heading);
     $("#data-panel").append(col);
 
