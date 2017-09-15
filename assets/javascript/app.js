@@ -41,12 +41,11 @@ var config = {
       // role = $('input[name="role"]:checked').val();
       userObject = {firstName: capitalizeStr($("#firstName").val().trim()),
                     lastName: capitalizeStr($("#lastName").val().trim()),
-                    email:  capitalizeStr($("#email").val().trim()),
+                    email:  $("#email").val().trim(),
                     imageUrl: "assets/images/"+ $("#imageUrl").val().trim(),
                     bio: $("#bio").val().trim(),
                     role: $('input[name="role"]:checked').val()
                    }
-      
         var myKey = firebase.database().ref().push().key;
                   
         database.ref().push({
@@ -85,6 +84,7 @@ var config = {
   // Function checks for new child added to database and updates the html display    
   database.ref().on("child_added", function (snapshot) {
     // storing the snapshot.val() in a variable for convenience
+    console.log("inside add");
     var sv = snapshot.val();
     renderData(sv);
 
@@ -95,16 +95,24 @@ var config = {
   });
 
   function renderData(sv) {
-    console.log(sv);
+    console.log("inside render");
     var col = $("<div>");
-    col.addClass("column");
+    col.addClass("cell");
     var image = $("<img>");
     image.attr("src", sv.userInfo.imageUrl);
+    image.attr("id", "userImg");
+    image.attr("data-email", sv.userInfo.email);
     var heading = $("<h5>");
     heading.html(sv.userInfo.firstName+ ""+sv.userInfo.lastName);
     col.append(image).append(heading);
     $("#data-panel").append(col);
 
   }
+
+  $("body").on("click", "#userImg", function(){
+      var user =$(this).attr("data-email");
+      console.log(user);
+      location.href = "calendar.html?"+user;
+  });
 
 });

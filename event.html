@@ -1,0 +1,70 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation Starter Template</title>
+    <!-- Compressed CSS -->
+    <!-- <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css"> -->
+    <!-- Compressed CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:900" rel="stylesheet">
+    <!-- Compressed JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+  </head>
+  <body>
+
+    <!-- event input form -->
+    <div class="grid-container">
+      <div class="grid-x">
+        <div class="medium-4 small-12 cell">
+          <button id="authorize-button" class="button" style="display: none;">Authorize</button>
+          <button id="signout-button" class="button" style="display: none;">Signout</button>
+        </div>
+     </div> 
+     <div class="grid-x grid-margin-x">
+        <div class="medium-4 small-12 cell">
+          <div class="card">
+            <div class="card-divider">
+              Add Event
+            </div>
+            <div class="card-section">
+              <form id="inputForm">
+                <label>Event Summary
+                    <input type="text" id="summary" placeholder="Enter event summary">
+                </label>
+               <!--  <label>Location
+                  <input type="text" id="location" placeholder="Enter event location">
+                </label>
+                <label>Description
+                  <input type="text" id="description" placeholder="Enter event description">
+                </label>
+                <label>Start Time
+                  <input type="text" id="startTime" placeholder="Enter event start time">
+                </label>
+                <label>End Time
+                  <input type="text" id="endTime" placeholder="Enter event end time">
+                </label>
+                <label>Attendees
+                  <textarea id="attendees" placeholder="Enter attendee emails"></textarea>
+                </label> -->
+                <input type="submit" class="button" value="Submit" id="addEvent">
+              </form> 
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>         
+  <pre id="content"></pre>
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <script src="assets/javascript/calendar.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>
