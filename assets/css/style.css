@@ -2,21 +2,55 @@
 body,html{
     height:100%;
 }
+body{
+	/* background: url(http://www.webdesigndev.com/wp-content/uploads/2015/02/5-Blurred-Backgrounds-Vol.jpg) ;  */
+	-webkit-background-size:cover;
+	-moz-background-size:cover;
+	-o-background-size:cover;
+	background-size: cover;
+
+}
+h4{
+    font-family: 'Kreon', serif;
+    font-size: 40px;
+    color:#A01F1F;
+}
+h5{
+    font-family: 'Aclonica', sans-serif;
+    font-size: 20px;
+    color:blue;
+}
 .demo-toggle-title {
      margin-top: 0.5rem;
  }
-
+ .tn{
+    border: 1px solid grey;
+    margin-right: 10px;
+    padding-top: 10px;
+    margin-bottom: 25px;
+}
  .orbit-image {
      height: 250px;
  }
  
-
- .is-active {
-     background-color: lightgreen;
+ .top-bar, .top-bar ul {
+     background-color: #222222;
  }
-
+ .is-active {
+     background-color:rgba(0,0,0,0.6);
+ }
+ .top-bar, .top-bar ul {
+     padding:0px;
+ }
+ .row {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.menu a, .menu button, .menu input {
+    margin-top:5px;
+}
  footer {
-     background-color: #eee;
+     background-color:#222222;;
      position: relative;
      bottom: 0;
      width: 100%;
@@ -26,13 +60,17 @@ body,html{
  .menu-text {
      font-family: 'Cinzel Decorative', cursive;
      font-size: 30px;
-     color: maroon;
+     color:orangered;
  }
-
- button.button {
-     background-color: maroon;
+ .menu.align-right {
+     float: right;
  }
-
+.fa{
+    padding:10px;
+}
+.lin,.fb,.twi{  
+    padding: 10px;
+}
  #data {
      max-height: 267px;
      overflow: auto;
@@ -47,7 +85,12 @@ body,html{
      overflow: hidden;
      margin-left: 20px;
  }
-
+ #input{
+     float: right;
+ }
+ .menu>li>a{
+padding: 10px;
+ }
  .btn-file input[type=file] {
      position: absolute;
      top: 0;
@@ -63,7 +106,10 @@ body,html{
      cursor: inherit;
      display: block;
  }
-
+ul.menu-text-1{
+    padding: 10px;
+    color: whitesmoke;
+}
 
  #img-upload {
      width: 100%;
@@ -71,5 +117,6 @@ body,html{
  .wrapper{
      min-height:90%;
      margin-bottom: 20px;
+     padding: 20px;
  }
 
