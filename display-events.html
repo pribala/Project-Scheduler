@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Display Events</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+
+</head>
+<body>
+<!-- person's pic and id-->
+	<div class="grid-container">
+		<div class="grid-x">
+			<div class="medium-4 cell">
+				<button id="authorize-button" class="button" >Authorize</button>
+				<button id="signout-button" class="button" >Sign Out</button>
+			</div>
+		</div>
+		<div class="grid-x grid-margin-x">
+	        <div class="medium-4 small-12 cell">
+	        	<div class="card">
+	            	<div class="card-divider">
+	              		Upcoming Events
+	            	</div>
+	            	<div class="card-section">
+						<table>
+							<thead>
+							    <tr>
+							      <th>Event Summary</th>
+							      <th>When</th>
+							    </tr>
+						  	</thead>
+					  	 	<tbody id="event-data">
+					  	 	</tbody>
+					  	</table>
+					</div>
+				</div>	  	
+			</div>
+			<div class="medium-8" cell>
+				<div class="card">
+	            	<div class="card-divider">
+	              		Requested Events
+	            	</div>
+	            	<div class="card-section">
+	            		<table>
+	            			<thead>
+	            				<tr>
+	            					<th>Event Summary</th>
+	            					<th>Location</th>
+	            					<th>Start Time</th>
+	            					<th>End Time</th>
+	            					<th>Requested by</th>
+	            					<th>Attendees</th>
+	            				</tr>
+	            			</thead>
+	            			<tbody id="pendingEvents">
+	            			</tbody>
+	            		</table>
+	            	</div>
+	            </div>	
+			</div>
+		</div>
+    	<div class="grid-x">
+			<!-- <div class="medium-8" cell>
+				<div class="card">
+	            	<div class="card-divider">
+	              		Requested Events
+	            	</div>
+	            	<div class="card-section">
+	            		<table>
+	            			<thead>
+	            				<tr>
+	            					<th>Event Summary</th>
+	            					<th>Location</th>
+	            					<th>Start Time</th>
+	            					<th>End Time</th>
+	            					<th>Requested by</th>
+	            					<th>Attendees</th>
+	            				</tr>
+	            			</thead>
+	            			<tbody id="pendingEvents">
+	            			</tbody>
+	            		</table>
+	            	</div>
+	            </div>	
+			</div> -->
+
+	        <div class="medium-4 cell">
+	            <div class="card">
+	            	<div class="card-divider">
+	              		Add Event
+	            	</div>
+	            	<div class="card-section">
+	              		<form id="inputForm">
+	                		<label>Event Summary
+	                    		<input type="text" id="summary" placeholder="Enter event summary">
+	                		</label>
+	               			<label>Location
+	                  			<input type="text" id="location" placeholder="Enter event location">
+	                		</label>
+	                		<label>Start Time
+	                  			<input type="text" id="startTime" placeholder="Enter event start time">
+	                		</label>
+	                		<label>End Time
+	                  			<input type="text" id="endTime" placeholder="Enter event end time">
+	                		</label>
+	                		<label>Attendees
+	                  			<textarea id="attendees" placeholder="Enter attendee emails"></textarea>
+	                		</label>
+	                			<input type="submit" class="button" value="Submit" id="addEvent">
+	              		</form> 
+	            	</div>
+	          	</div>
+	        </div>
+	    </div>    
+        
+	</div>
+		
+	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<script src="assets/javascript/calendar.js"></script>
+	<script src="assets/javascript/configFile.js"></script>
+	<script src="assets/javascript/renderDOM.js"></script>
+	<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+	</script>
+	
+  
+</body>
+</html>

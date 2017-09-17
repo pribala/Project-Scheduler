@@ -11,17 +11,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" type="text/css">
     <!-- Compressed JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Aclonica|Kreon" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.1.1/motion-ui.min.css" />
+    <!-- <script src="javascript/app.js"></script> -->
 </head>
 
 <body>
-   
     <header>
         <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
             <button class="menu-icon" type="button" data-toggle="example-menu"></button>
             <div class="title-bar-title">Menu</div>
         </div>
-
         <div class="top-bar" id="example-menu">
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
@@ -42,42 +43,36 @@
     </header>
     <br>
     <div class="wrapper">
-        <iframe src="" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            <button type="button" class="button" id="signIn">LOGIN</button>
+            <button type="button" class="button" id="students">Students</button>
     </div>
     <footer>
         <div class="row expanded">
-            <div class="medium-6 columns">
+            <div class="medium-4 columns">
                 <ul class="menu">
                     <li><a href="#">Legal</a></li>
                     <li><a href="#">Partner</a></li>
                     <li><a href="#">Explore</a></li>
                 </ul>
             </div>
-            <div class="medium-6 columns">
-                <ul class="menu align-right">
-                    <li class="menu-text-1">Copyright © 2017 kin,priya,mansi</li>
-                </ul>
+            <div class="medium-5 columns">
+                <ul class="menu-text-1">Copyright © 2017 kin,priya,mansi</ul>
+            </div>
+            <div class="menu align-right medium-3 columns" id="icons">
+                <a href="https://www.linkedin.com/in/kinnera-bezawada/" target="_blank"><i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i></a>
+                <a href="https://twitter.com/kinnerabezawada" target="_blank"><i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></a>
+                <a href="https://www.instagram.com/kin_bez/?hl=en" target="_blank"><i class="fa fa-instagram fa-2x" aria-hidden="true" ></i></a>
+                <a href="https://www.facebook.com/profile.php?id=100006073662280" target="_blank"><i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i></a>
             </div>
         </div>
-
     </footer>
     <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="assets/javascript/app.js"></script>
     <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+    <script src="assets/javascript/configFile.js"></script>
     <script>
-   // var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
-        var url = window.location.search;
-        var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
-        console.log(queryString);
-        // var path ="https://www.google.com/calendar/embed?src="+queryString+"&ctz=America/New_York";
-        // $("iframe").attr("src", path);
         $(document).foundation();
-       
-            
-        
-        
-
     </script>
 </body>
+
 </html>

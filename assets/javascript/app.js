@@ -1,16 +1,15 @@
 $(document).ready(function(){
-var config = {
-        apiKey: "AIzaSyDmKpVmVd3N_dA4wAKrxX6L-pqxDvDXNAk",
-        authDomain: "scheduler-708c6.firebaseapp.com",
-        databaseURL: "https://scheduler-708c6.firebaseio.com",
-        projectId: "scheduler-708c6",
-        storageBucket: "",
-        messagingSenderId: "545118572679"
-      };
-      firebase.initializeApp(config);
+// var config = {
+//         apiKey: "AIzaSyDmKpVmVd3N_dA4wAKrxX6L-pqxDvDXNAk",
+//         authDomain: "scheduler-708c6.firebaseapp.com",
+//         databaseURL: "https://scheduler-708c6.firebaseio.com",
+//         projectId: "scheduler-708c6",
+//         storageBucket: "",
+//         messagingSenderId: "545118572679"
+//       };
+//       firebase.initializeApp(config);
       // Create a variable to reference the database.
       var database = firebase.database();
-
       // -----------------------------
       var firstName = "";
       var lastName = "";
@@ -18,7 +17,9 @@ var config = {
       var imageUrl = "";
       var bio ="";
       var role = "";
-
+      var url = window.location.search;
+      var currentUser = url ? url.split('?')[1] : window.location.search.slice(1);
+      //console.log(queryString+"hi");
       var userObject = {};
       // connectionsRef references a specific location in our database.
       // All of our connections will be stored in this directory.
@@ -112,7 +113,7 @@ var config = {
   $("body").on("click", "#userImg", function(){
       var user =$(this).attr("data-email");
       console.log(user);
-      location.href = "calendar.html?"+user;
+      location.href = "display-events.html?"+user+'&'+ currentUser;
   });
 
 });

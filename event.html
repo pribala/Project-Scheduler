@@ -25,8 +25,8 @@
           <button id="authorize-button" class="button" style="display: none;">Authorize</button>
           <button id="signout-button" class="button" style="display: none;">Signout</button>
         </div>
-     </div> 
-     <div class="grid-x grid-margin-x">
+      </div> 
+      <div class="grid-x grid-margin-x">
         <div class="medium-4 small-12 cell">
           <div class="card">
             <div class="card-divider">
@@ -37,11 +37,8 @@
                 <label>Event Summary
                     <input type="text" id="summary" placeholder="Enter event summary">
                 </label>
-               <!--  <label>Location
+               <label>Location
                   <input type="text" id="location" placeholder="Enter event location">
-                </label>
-                <label>Description
-                  <input type="text" id="description" placeholder="Enter event description">
                 </label>
                 <label>Start Time
                   <input type="text" id="startTime" placeholder="Enter event start time">
@@ -51,20 +48,60 @@
                 </label>
                 <label>Attendees
                   <textarea id="attendees" placeholder="Enter attendee emails"></textarea>
-                </label> -->
+                </label>
                 <input type="submit" class="button" value="Submit" id="addEvent">
               </form> 
             </div>
           </div>
+        </div>
+         <div class="medium-8 small-12 cell">
+          <!-- 
+            <iframe src="" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe> -->
+          
         </div>  
+      </div>
+      <div class="grid-x">
+        <div class="large-auto medium-12 small-12 cell">
+          <div class="card">
+            <div class="card-divider">
+              Pending Events
+            </div>
+            <div class="card-section">
+              <table class="unstriped">
+                <thead>
+                  <tr>
+                    <th>Event Summary</th>
+                    <th>Location</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Requested By</th>
+                  </tr>
+                </thead>
+                <tbody id="pendingEvents">
+                  
+                </tbody>
+              </table>  
+            </div>
+        </div>
       </div>
     </div>         
   <pre id="content"></pre>
+
+  
     <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
     <script src="assets/javascript/calendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
       onload="this.onload=function(){};handleClientLoad()"
       onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+    <script>
+      var url = window.location.search;
+        var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+        console.log(queryString);
+        //queryString = "priya.balakrishnan@gmail.com";
+        var path ="https://www.google.com/calendar/embed?src="+queryString+"&ctz=America/New_York";
+        $("iframe").attr("src", path);
     </script>
   </body>
 </html>
