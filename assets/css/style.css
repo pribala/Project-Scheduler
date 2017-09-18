@@ -72,4 +72,10 @@ body,html{
      min-height:90%;
      margin-bottom: 20px;
  }
+ .tn {
+            border: 1px solid black;
+            margin-right:25px;
+            padding-top: 10px;
+            margin-bottom: 25px;
+        }
 
