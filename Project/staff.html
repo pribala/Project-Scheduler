@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Rutgers Scheduler</title>
+
+ <!-- CSS -->
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <link href="assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+ <link href="assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+ <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:900" rel="stylesheet">
+ <link href="http://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.15/angular-locale_ko-kr.js">
+</head>
+<body>
+ <nav class="white" role="navigation">
+ <div class="nav-wrapper container">
+ <a id="logo-container" href="#" class="brand-logo">Scheduler</a>
+ <ul class="right hide-on-med-and-down">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="staff.html">Teacher</a></li>
+ <li><a href="staff.html">Students</a></li>
+ <li><a href="staff.html">Career Services</a></li>
+ </ul>
+
+ <ul id="nav-mobile" class="side-nav">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="staff.html">Teacher</a></li>
+ <li><a href="staff.html">Students</a></li>
+ <li><a href="staff.html">Career Services</a></li>
+ </ul>
+ <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+ </div>
+ </nav>
+ <!--div to display images-->
+ <div class="row">
+  <div class="col s12 m8">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">Instructors</span>
+        <p>I am a very simple card. I am good at containing small bits of information.
+        I am convenient because I require little markup to use effectively.</p>
+        </div>
+        <div class="card-content white-text">
+            <span class="card-title">Career Services</span>
+            <p>I am a very simple card. I am good at containing small bits of information.
+            I am convenient because I require little markup to use effectively.</p>
+            </div>
+            <div class="card-content white-text">
+                <span class="card-title">Students</span>
+                <p>I am a very simple card. I am good at containing small bits of information.
+                I am convenient because I require little markup to use effectively.</p>
+                </div>
+    </div>
+  </div>
+<!--Form validation with icons-->
+<div class="col s12 m4">
+    <div class="card-panel">
+           <h5> Add User</h5>
+           <hr>
+        <div class="row">
+            <form class="col s12 m12right-alert">
+              <div class="row">
+                  <div class="input-field col s12 m12">
+                      <i class="material-icons prefix">account_circle</i>
+                    <input id="firstName" type="text" class="validate">
+                    <label for="first_input2" data-error="Please enter first name." data-success="Perfect!">First Name*</label>
+                  </div>
+              </div>
+                  <div class="row">
+                  <div class="input-field col s12 m12"> 
+                      <i class="material-icons prefix">account_circle</i>                      
+                      <input id="lastName" type="text" class="validate" required />
+                      <label for="Lastname">Last Name*</label>
+                    </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12">
+                  <i class="material-icons prefix">email</i>
+                  <input id="email" type="email" class="validate">
+                  <label for="email_input2" class="" data-error="Please enter valid email." data-success="I Like it!">Email*</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12">
+                    <i class="material-icons prefix">insert_link</i>
+                  <input id="imageUrl" type="url" class="validate">
+                  <label for="url_input2" class="" data-error="Please enter valid url." data-success="I know you!">URL*</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-field col s12 m12">
+                    <i class="material-icons prefix">message</i>
+                  <textarea id="bio" class="materialize-textarea validate" length="120"></textarea>
+                  <label for="message2" class="">Bio*</label>
+                </div>
+             </div>
+             <div class="row">
+             <div class="col s12 m12">
+                <i class="material-icons perfix">group</i>
+                <label for="role_select">Role *</label>
+                <p>
+                  <input type="radio" name="role" value="Instructor" id="roleInstructor" required><label for="roleInstructor">Instructor</label>
+                  <input type="radio" name="role" value="TA" id="roleTA"><label for="roleTA">TA</label>
+                  <input type="radio" name="role" value="Student" id="roleStudent"><label for="roleStudent">Student</label>
+                  <input type="radio" name="role" value="Career Services" id="roleServices"><label for="roleServices">Career Services</label>
+                </p>
+                <div class="input-field">
+                  <div class="errorTxt8"></div>
+                </div>
+              </div>   
+             </div>            
+              <div class="row">
+              <div class="input-field col s4 m3">
+                <button class="btn waves-effect waves-light left" type="submit" id="submit" name="action">Submit
+                  <i class="mdi-content-send right"></i> 
+                </button>
+              </div>
+            </div> 
+        </form>
+        </div>
+    </div>
+  </div>
+ <div class="col s9 t_news">
+ <!-- Promo Content 2 goes here -->
+
+ </div>
+ </div>
+ </div>
+
+ <footer class="page-footer teal">
+ <div class="container">
+ <div class="row center">
+ <h5 class="white-text">@Copyright 2017 by Priya, Kin, Mansi</h5>
+ </div>
+ </div>
+ </footer>
+
+
+ <!-- Scripts-->
+ <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
+ <script src="assets/js/techcrunchapi.js"></script>
+ <script src="assets/js/carousel.js"></script>
+ <script src="assets/js/init.js"></script>
+ 
+
+</body>
+</html>
