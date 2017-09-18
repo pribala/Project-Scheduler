@@ -24,7 +24,11 @@ $("#addEvent").on("click", function(e){
   summary = $("#summary").val().trim();
   location = $("#location").val().trim();
   startTime = new Date($("#startTime").val().trim());
+  var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
+  //console.log(formattedStartDate);
   endTime = new Date($("#endTime").val().trim());
+  var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
+  //console.log(formattedEndDate);
   //datetimes must be in this format YYYY-MM-DDTHH:MM:SS.MMM+HH:MM
   ////So that's year, month, day, the letter T, hours, minutes, seconds, miliseconds, + or -, timezoneoffset in hours and minutes
   attendees = $("#attendees").val().trim();
@@ -37,8 +41,8 @@ $("#addEvent").on("click", function(e){
     database.ref('pending-events/').push({
       summary: summary,
       location: location,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: formattedStartDate,
+      endTime: formattedEndDate,
       attendees: attendees,
       currentUser: currentUser,
     });
@@ -56,9 +60,9 @@ $("#addEvent").on("click", function(e){
     var col2 = $("<td>");
     col2.text(location);
     var col3 = $("<td>");
-    col3.text(startTime);
+    col3.text(moment(startTime, "X").format("YYYY/MM/DD HH:mm"));
     var col4 = $("<td>");
-    col4.text(endTime);
+    col4.text(moment(endTime, "X").format("YYYY/MM/DD HH:mm"));
     var col5 = $("<td>");
     col5.text(currentUser);
     var col6 = $("<td>");
