@@ -17,9 +17,9 @@
     putting all presentation stuff into the HTML, and keeping it out of the JS.
   -->
    <script type="script/x-handlebars-template" id="events"> 
-    <ul class="list-group">
+<ul class="list-group">
       {{! 
-        `each` is an example of what's' called a helper in handlebars. It loops 
+           `each` is an example of what's' called a helper in handlebars. It loops 
         over elements in the results array and renders what's in between the 
         beginning and end of the each statement in the context of the current 
         array element.
@@ -47,7 +47,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h1>DC Meetups in the Sci-Fi / Fantasy Category</h1>
+        <h1>Up Coming Open Events </h1>
         <div id="events-container"></div>
       </div>
     </div>
@@ -57,7 +57,8 @@
 $(function() {
   // This url is signed with my API Key, but it will only work with these parameters.
   // This way I can use the URL in this example without exposing my secret credentials.
-  var signedURL = 'https://api.meetup.com/2/open_events?zip=20012&and_text=False&offset=0&format=json&limited_events=False&page=200&radius=25.0&category=29&desc=False&status=upcoming&sig_id=17324211&sig=54c93a355bf1951e34451b97678e1fb26c11634b';
+  //https://api.meetup.com/2/open_events?zip=07724&and_text=False&offset=0&city=newyork&format=json&limited_events=False&photo-host=public&page=20&radius=25.0&desc=False&status=upcoming&sig_id=230257999&sig=679ca2b92678d49278780598b94bd390ccc05b01//
+  var signedURL = 'https://api.meetup.com/2/open_events?zip=07724&and_text=False&offset=0&city=newyork&format=json&limited_events=False&photo-host=public&page=20&radius=25.0&desc=False&status=upcoming&sig_id=230257999&sig=679ca2b92678d49278780598b94bd390ccc05b01';
   
   // Loop through the various template id's and compile them using handlebars. There
   // is only one template in this example, but it would be easy to add more.

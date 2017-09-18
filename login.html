@@ -43,7 +43,7 @@
     </header>
     <br>
     <div class="wrapper">
-            <button type="button" class="button">LOGIN</button>
+            <button type="button" class="button" id="signIn">LOGIN</button>
     </div>
     <footer>
         <div class="row expanded">
@@ -71,6 +71,60 @@
     <script>
         $(document).foundation();
     </script>
-</body>
+    <script>
+        $(document).ready(function () {
+  // $("#data").hide();
+  // $("#id").hide(); 
+  var config = {
+    apiKey: "AIzaSyDmKpVmVd3N_dA4wAKrxX6L-pqxDvDXNAk",
+    authDomain: "scheduler-708c6.firebaseapp.com",
+    databaseURL: "https://scheduler-708c6.firebaseio.com",
+    projectId: "scheduler-708c6",
+    storageBucket: "",
+    messagingSenderId: "545118572679"
+  };
+  firebase.initializeApp(config);
+  firebase.initializeApp(config);
+  //Run Clock  
+  setInterval(function(){
+    $('.current-time').html(moment().format('hh:mm:ss A'))
+  }, 1000);
 
+  $(".row").hide();
+  var provider = new firebase.auth.GoogleAuthProvider();
+  // function googleSignin() {
+  $("#signIn").on("click", function () {
+    firebase.auth()
+      .signInWithPopup(provider).then(function (result) {
+        var token = result.credential.accessToken;
+        var user = result.user;
+        // console.log(token)
+        // console.log(user)
+        $(".row").show();
+        login();
+      }).catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error.code)
+        console.log(error.message)
+      });
+    $(this).removeClass("signIn")
+   .addClass("signOut")
+  .text('Sign Out Of Google');
+
+  })
+  $(document).on("click", ".signOut", function () {
+       firebase.auth().signOut().then(function () {
+        $(".row").hide();
+        console.log('Signout Succesfull');
+      }, function (error) {
+        console.log('Signout Failed');
+      });
+    $(this).removeClass('signOut')
+      .addClass('signIn')
+      .text('Google SignIn');
+  })
+        })
+        </script>
+</body>
 </html>
