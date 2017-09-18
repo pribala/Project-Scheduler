@@ -1,0 +1,177 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation Starter Template</title>
+    <!-- Compressed CSS -->
+    <!-- <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css"> -->
+    <!-- Compressed CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.css">
+    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+    <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:900" rel="stylesheet">
+    <!-- Compressed JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
+  </head>
+  <body>
+
+    <!-- event input form -->
+    <div class="grid-container">
+      <!-- <div class="grid-x">
+      <div class="medium-4 small-12 cell">
+        <button id="authorize-button" class="button" style="display: none;">Authorize</button>
+        <button id="signout-button" class="button" style="display: none;">Signout</button>
+      </div>
+     </div> -->
+      <div class="grid-x grid-margin-x">
+        <div class="medium-4 small-12 cell">
+          <div class="card">
+            <div class="card-divider">
+              Add Event
+            </div>
+            <div class="card-section">
+              <form id="inputForm">
+                <label>Event Summary
+                    <input type="text" id="summary" placeholder="Enter event summary">
+                </label>
+                <label>Location
+                  <input type="text" id="location" placeholder="Enter event location">
+                </label>
+                <label>Description
+                  <input type="text" id="description" placeholder="Enter event description">
+                </label>
+                <label>Start Time
+                  <input type="text" id="startTime" placeholder="Enter event start time">
+                </label>
+                <label>End Time
+                  <input type="text" id="endTime" placeholder="Enter event end time">
+                </label>
+                <label>Attendees
+                  <textarea id="attendees" placeholder="Enter attendee emails"></textarea>
+                </label>
+                <button id="authorize-button" class="button" >Authorize</button>
+                <button id="signout-button" class="button">Signout</button>
+              </form> 
+            </div>
+          </div>
+        </div>  
+      </div> 
+    </div>         
+ 
+    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+    <!-- <script src="assets/javascript/calendar.js"></script> -->
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+    <script>
+        var CLIENT_ID = '545118572679-qn8k1nb5d0udfc107r5rbevakgf8l6lb.apps.googleusercontent.com';
+        // Array of API discovery doc URLs for APIs used by the quickstart
+        var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+    
+        // Authorization scopes required by the API; multiple scopes can be
+        // included, separated by spaces.
+        var SCOPES = 'https://www.googleapis.com/auth/calendar';
+    
+        var authorizeButton = document.getElementById('authorize-button');
+        var signoutButton = document.getElementById('signout-button');
+    
+        /**
+         *  On load, called to load the auth2 library and API client library.
+         */
+        function handleClientLoad() {
+          gapi.load('client:auth2', initClient);
+        }
+    
+        /**
+         *  Initializes the API client library and sets up sign-in state
+         *  listeners.
+         */
+        function initClient() {
+          gapi.client.init({
+            discoveryDocs: DISCOVERY_DOCS,
+            clientId: CLIENT_ID,
+            scope: SCOPES
+          }).then(function () {
+            // Listen for sign-in state changes.
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+    
+            // Handle the initial sign-in state.
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            authorizeButton.onclick = handleAuthClick;
+            signoutButton.onclick = handleSignoutClick;
+          });
+        }
+    
+        /**
+         *  Called when the signed in status changes, to update the UI
+         *  appropriately. After a sign-in, the API is called.
+         */
+        function updateSigninStatus(isSignedIn) {
+          if (isSignedIn) {
+            authorizeButton.style.display = 'none';
+            signoutButton.style.display = 'block';
+            addUpcomingEvent();
+          } else {
+            authorizeButton.style.display = 'block';
+            signoutButton.style.display = 'none';
+          }
+        }
+    
+        /**
+         *  Sign in the user upon button click.
+         */
+        function handleAuthClick(event) {
+          gapi.auth2.getAuthInstance().signIn();
+        }
+    
+        /**
+         *  Sign out the user upon button click.
+         */
+        function handleSignoutClick(event) {
+          gapi.auth2.getAuthInstance().signOut();
+        }
+    
+        /**
+         * Append a pre element to the body containing the given message
+         * as its text node. Used to display the results of the API call.
+         *
+         * @param {string} message Text to be placed in pre element.
+         */
+        function appendPre(message) {
+          var pre = document.getElementById('content');
+          var textContent = document.createTextNode(message + '\n');
+          pre.appendChild(textContent);
+        }
+    
+        /**
+         * Print the summary and start datetime/date of the next ten events in
+         * the authorized user's calendar. If no events are found an
+         * appropriate message is printed.
+         */
+        function addUpcomingEvent() {
+          var summary = $("#summary").val();
+          console.log(summary);
+          var location = $("#location").val();
+          var description = $("#description").val();
+          var startTime = $("#startTime").val();
+          var endTime = $("#endTime").val();
+          //var attendees = $("#attendees").val();
+         
+         
+          var request = gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': event
+          });
+    
+          request.execute(function (event) {
+            console.log('Event created: ' + event.htmlLink);
+          });
+    
+        }
+      </script>
+  </body>
+</html>
