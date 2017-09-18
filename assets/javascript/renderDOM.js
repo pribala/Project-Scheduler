@@ -99,7 +99,7 @@ $("#addEvent").on("click", function(e){
       //   {'email': 'priya.balakrishnan@gmail.com'},
       //   {'email': 'andu_pri@yahoo.com'}
       // ],
-      'attendees': [invitees],
+      'attendees': invitees,
       'reminders': {
         'useDefault': false,
         'overrides': [
@@ -153,7 +153,7 @@ function splitStr(str) {
   strArray.forEach(function(item) {
     // create an array of attendees object- email: 'value'
     emails.push(
-      {"'emails'": item});
+      {"email": item.trim()});
   });
     console.log(emails);
     return emails;
