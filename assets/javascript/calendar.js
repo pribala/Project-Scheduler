@@ -8,18 +8,10 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 var SCOPES = 'https://www.googleapis.com/auth/calendar';
-//var SCOPES = "https://www.googleapis.com/auth/calendar.readonly"
 var authorizeButton = document.getElementById('authorize-button');
 var signoutButton = document.getElementById('signout-button');
-// // declare global variables for different sections of code
-//   var summary = "";
-//   var location = "";
-//   var startTime ="";
-//   var endTime = "";
- 
-//   var attendees = "";
-//   var invitees = "";
-//   var currentUser = "";
+var submitButton = document.getElementById('addEvent');
+
 /**
  *  On load, called to load the auth2 library and API client library.
  */
@@ -55,11 +47,12 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
-    //addUpcomingEvent();
+    submitButton.style.display ='block';
     listUpcomingEvents();
   } else {
     authorizeButton.style.display = 'block';
     signoutButton.style.display = 'none';
+    submitButton.style.display = 'none';
   }
 }
 
@@ -67,6 +60,7 @@ function updateSigninStatus(isSignedIn) {
  *  Sign in the user upon button click.
  */
 function handleAuthClick(event) {
+  //event.preventDefault();
   gapi.auth2.getAuthInstance().signIn();
 }
 
@@ -74,5 +68,6 @@ function handleAuthClick(event) {
  *  Sign out the user upon button click.
  */
 function handleSignoutClick(event) {
+  //event.preventDefault();
   gapi.auth2.getAuthInstance().signOut();
 }

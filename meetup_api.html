@@ -1,0 +1,107 @@
+<!-- myapikey-683356527a2b2c4c5b15507f6e51356 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Validation</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link href="./style.css" rel="stylesheet"> -->
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.0/handlebars.min.js" type="text/javascript"></script>
+</head>
+<body>
+  <!-- 
+    This is a script type you've never seen before. The browser sees a script
+    with an unrecognized type and properly ignores it. This allows us to embed
+    our templates within the HTML, which is very convenient and in keeping with
+    putting all presentation stuff into the HTML, and keeping it out of the JS.
+  -->
+   <script type="script/x-handlebars-template" id="events"> 
+<ul class="list-group">
+      {{! 
+           `each` is an example of what's' called a helper in handlebars. It loops 
+        over elements in the results array and renders what's in between the 
+        beginning and end of the each statement in the context of the current 
+        array element.
+      }}
+      {{#each results}}
+        <li class="list-group-item">
+          {{!
+            The double curly brackets in handlebars are names of keys on the
+            context object. Because we're looping over the results, the values
+            are coming from individual event objects in the results array that
+            comes back from the meetup api.
+          }}
+          <h4 class="list-group-item-heading"><a href="{{event_url}}">{{name}}</a></h4>
+          {{! 
+            The description returned actually has an html paragraph tag wrapped
+            around the text (not good practice really). The triple curly brackets
+            tell handlebars to put the raw html into the template. Otherwise it would
+            escape the content and you'd see the actual tag output on the page.
+          }}
+          <div class="list-group-item-text">{{{description}}}</div>
+        </li>
+      {{/each}}
+    </ul>
+</script>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Up Coming Open Events </h1>
+        <div id="events-container"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+$(function() {
+  // This url is signed with my API Key, but it will only work with these parameters.
+  // This way I can use the URL in this example without exposing my secret credentials.
+  //https://api.meetup.com/2/open_events?zip=07724&and_text=False&offset=0&city=newyork&format=json&limited_events=False&photo-host=public&page=20&radius=25.0&desc=False&status=upcoming&sig_id=230257999&sig=679ca2b92678d49278780598b94bd390ccc05b01//
+  var signedURL = 'https://api.meetup.com/2/open_events?zip=07724&and_text=False&offset=0&city=newyork&format=json&limited_events=False&photo-host=public&page=20&radius=25.0&desc=False&status=upcoming&sig_id=230257999&sig=679ca2b92678d49278780598b94bd390ccc05b01';
+  
+  // Loop through the various template id's and compile them using handlebars. There
+  // is only one template in this example, but it would be easy to add more.
+  var templates = ['events'].reduce(function(ret, id) {
+    // We're storing handlebars templates as wierd script tags, but we can access their
+    // content (the raw template) just like any other HTML element by reading it's text
+    // content.
+    var rawTemplate = $('#' + id).text();
+    // Handlebars takes the text of the template and converts it into a function we can
+    // use later. The function takes an object called the "context", and the little {{foo}}
+    // things in the template are references to keys on that object. Handlebars takes the
+    // values associated with these keys and inserts them in place of the tokens when
+    // the template is rendered.
+    ret[id] = Handlebars.compile(rawTemplate);
+    return ret;
+  }, {});
+  
+  function fetchEvents(url) {
+    // Here we do the actual ajax request. If it's successfull then
+    // renderEvents gets called with the response as an argument.
+    // There's no error handler here, but you'd probably want to
+    // handle errors in some way that doesn't break the app.
+    $.ajax({
+      url: url, 
+      success: renderEvents,
+      // This is key. Read up on JSONP requests.
+      dataType: 'jsonp'
+    }); 
+  }
+  
+  function renderEvents(response) {
+    // Once we get the response, we can pass it to our template function
+    // and get some HTML. Much simpler than writing out the JST (JavaScript
+    // Template Function) manually in our JS, and much cleaner and easier
+    // to understand then a bunch of string concatenation.
+    var renderedHTML = templates['events'](response);
+    // Then we set the HTML into our container.
+    $('#events-container').html(renderedHTML);
+  }
+  
+  // Kick things off!
+  fetchEvents(signedURL);
+});
+</script>
+</body>
+</html>

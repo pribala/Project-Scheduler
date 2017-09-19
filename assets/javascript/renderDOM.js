@@ -1,166 +1,395 @@
 $(document).ready(function(){
-  var database = firebase.database();
-  // declare global variables for different sections of code
-  var summary = "";
-  var location = "";
-  var startTime ="";
-  var endTime = "";
- 
-  var attendees = "";
-  var invitees = "";
-  //var currentUser = localStorage.getItem("current-user");
+    var database = firebase.database();
+    // declare global variables for different sections of code
+    var summary = "";
+    var location = "";
+    var startTime ="";
+    var endTime = "";
+   
+    var attendees = "";
+    var invitees = "";
+    
+    var storedData = JSON.parse(sessionStorage.getItem('userData'));
+    var url = window.location.search;
+    
+    // Getting the calendar owner from session storage
+    var calOwner = sessionStorage.getItem("calOwner");
+    console.log(calOwner);
+    // Checking to see whether user is logged in
+    if(storedData){
+      if (storedData.status && storedData.currentUser) {
+        console.log(storedData);
+        currentUser = storedData.currentUser;
+        currentStatus = storedData.status;
+        console.log("user:"+currentUser);
+        console.log("status:"+currentStatus);
+      }else{
+        location.href = "login.html";
+      }
+    }else{
+      location.href = "login.html";
+    }  
+  $("#update").hide(); 
+  $("#addEvent").on("click", function(e){
+    e.preventDefault();
+    
+    // If logged in user is not the calendar owner then add the event to firebase under /pending-events
+    //else add event into calendar
 
-  var url = window.location.search;
-  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
-  var calOwner = queryString ? queryString.split('&')[0] : queryString.slice(0);
-  console.log(calOwner);
-  var currentUser = queryString ? queryString.split('&')[1] : queryString.slice(1);
-  console.log(currentUser);
-$("#addEvent").on("click", function(e){
-  e.preventDefault();localStorage.getItem("current-user")
-  
-  //if logged in user is not equal to calendar owner then push into firebase under /pending-events
-  //else add event into calendar
-  summary = $("#summary").val().trim();
-  location = $("#location").val().trim();
-  startTime = new Date($("#startTime").val().trim());
-  var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
-  //console.log(formattedStartDate);
-  endTime = new Date($("#endTime").val().trim());
-  var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
-  //console.log(formattedEndDate);
-  //datetimes must be in this format YYYY-MM-DDTHH:MM:SS.MMM+HH:MM
-  ////So that's year, month, day, the letter T, hours, minutes, seconds, miliseconds, + or -, timezoneoffset in hours and minutes
-  attendees = $("#attendees").val().trim();
-  invitees = splitStr(attendees);
-  //var currentUser = localStorage.getItem("currentUser");
-  //currentUser = "priya.balakrishnan@gmail.com";
-  if(currentUser !== calOwner) {
-    console.log("diff user");
-    //Add event to the pending requests list and database
-    database.ref('pending-events/').push({
-      summary: summary,
-      location: location,
-      startTime: formattedStartDate,
-      endTime: formattedEndDate,
-      attendees: attendees,
-      currentUser: currentUser,
-    });
-               
-    //Clear the input fields after data is added to database
-    $("#summary").text("");
-    $("#location").text("");
-    $("#startTime").val("");
-    $("#endTime").val("");
-    $("#attendees").val("");
-          
-    var row = $("<tr>");
-    var col1 = $("<td>");
-    col1.text(summary);
-    var col2 = $("<td>");
-    col2.text(location);
-    var col3 = $("<td>");
-    col3.text(moment(startTime, "X").format("YYYY/MM/DD HH:mm"));
-    var col4 = $("<td>");
-    col4.text(moment(endTime, "X").format("YYYY/MM/DD HH:mm"));
-    var col5 = $("<td>");
-    col5.text(currentUser);
-    var col6 = $("<td>");
-    col6.text(attendees);
-    //if logged in user same as calendar owner allow to add events to cal and delete it from firebase
-    // delete, edit button deletes,edits from firebase
-    var dataButtons = $("<td>");
-    var btn = $("<span>");
-    btn.attr("id", "delete");
-    btn.html("<i class='fa fa-trash' aria-hidden='true'>");
-    btn.addClass("btnClass");
-    var editBtn = $("<span>");
-    editBtn.attr("id", "edit");
-    editBtn.html("<i class='fa fa-pencil' aria-hidden='true'></i>");
-    editBtn.addClass("btnClass");
-    var addBtn = $("<span>");
-    addBtn.attr("id", "addToCal");
-    addBtn.html('<i class="fa fa-check" aria-hidden="true"></i>');
-    addBtn.addClass("btnClass");
-    dataButtons.append(addBtn).append(btn).append(editBtn);
-    row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
-    $("#pendingEvents").append(row);
-  }else {
+    summary = $("#summary").val().trim();
+    location = $("#eventLocation").val().trim();
+    startTime = new Date($("#startTime").val().trim());
+    var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
+    endTime = new Date($("#endTime").val().trim());
+    var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
+    
+    //datetimes must be in this format YYYY-MM-DDTHH:MM:SS.MMM+HH:MM
+    ////So that's year, month, day, the letter T, hours, minutes, seconds, miliseconds, + or -, timezoneoffset in hours and minutes
+    attendees = $("#attendees").val().trim();
+    invitees = splitStr(attendees);
+    if(currentUser !== calOwner) {
+      console.log("diff user");
+      //Add event to the pending requests list and database
+      var myKey = firebase.database().ref().push().key;
+      database.ref('pending-events/').push({
+        summary: summary,
+        location: location,
+        startTime: formattedStartDate,
+        endTime: formattedEndDate,
+        attendees: attendees,
+        currentUser: currentUser,
+        id: myKey
+      });
+      //Clear the input fields after data is added to database
+      $("#summary").val("");
+      $("#eventLocation").val("");
+      $("#startTime").val("");
+      $("#endTime").val("");
+      $("#attendees").val("");
+    }else {
+      console.log("same user");
+      // Add the new event to the Google Calendar
+      // Check if there are guests for the event and include them in the event resource
+      // else construct the event resource without attendees
+      if(attendees){
+        var event = {
+          'summary': summary,
+          'location': location,
+          'start': {
+            'dateTime': startTime.toISOString(),
+            'timeZone': 'America/New_York'
+          },
+          'end': {
+            'dateTime': endTime.toISOString(),
+            'timeZone': 'America/New_York'
+          },
+          'attendees': invitees,
+          'reminders': {
+            'useDefault': false,
+            'overrides': [
+              {'method': 'email', 'minutes': 24 * 60},
+              {'method': 'popup', 'minutes': 10}
+            ]
+          }
+        };
+      }else{
+        var event = {
+          'summary': summary,
+          'location': location,
+          'start': {
+            'dateTime': startTime.toISOString(),
+            'timeZone': 'America/New_York'
+          },
+          'end': {
+            'dateTime': endTime.toISOString(),
+            'timeZone': 'America/New_York'
+          },
+          'reminders': {
+            'useDefault': false,
+            'overrides': [
+              {'method': 'email', 'minutes': 24 * 60},
+              {'method': 'popup', 'minutes': 10}
+            ]
+          }
+        };
+      }
+      console.log(event);
+      //Clear the input fields after data is added to database
+      $("#summary").val("");
+      $("#eventLocation").val("");
+      $("#startTime").val("");
+      $("#endTime").val("");
+      $("#attendees").val("");
+      addUpcomingEvent(event);
+    } 
+  });
+
+  $("body").on("click", "#deleteEvent", function(e){
+    e.preventDefault();
+    var eventId = $(this).attr("data-key");
+    var request = gapi.client.calendar.events.delete({
+    'calendarId': 'primary',
+    'eventId': eventId,
+    'sendNotifications': true
+  });
+
+  request.execute(function(event) {
+  console.log('Event deleted');
+  });
+});
+
+// -------------------------------------------------------------------
+//  Pending requests related operations
+
+$("body").on("click", "#addToCal", function(e){
+  e.preventDefault();
+  var key = $(this).attr("data-key");
+  addAnEvent(key);
+})
+
+function addAnEvent(key) {
+  //if logged in user is the calendar owner then delete event from firebase under /pending-events
+  //and add event into calendar
+  if(currentUser === calOwner) {
+    summary = $("#eventSummary").text().trim();
+    location = $("#eventLoc").text().trim();
+    startTime = moment($("#eventStart").text().trim());
+    endTime = moment($("#eventEnd").text().trim());
+    attendees = $("#guests").text().trim();
+    invitees = splitStr(attendees);
+
     console.log("same user");
     // Add the new event to the Google Calendar
-    var event = {
-      'summary': summary,
-      'location': location,
-      'start': {
-        'dateTime': startTime.toISOString(),
-        'timeZone': 'America/New_York'
-      },
-      'end': {
-        'dateTime': endTime.toISOString(),
-        'timeZone': 'America/New_York'
-      },
-      // 'attendees': [
-      //   {'email': 'priya.balakrishnan@gmail.com'},
-      //   {'email': 'andu_pri@yahoo.com'}
-      // ],
-      'attendees': invitees,
-      'reminders': {
-        'useDefault': false,
-        'overrides': [
-          {'method': 'email', 'minutes': 24 * 60},
-          {'method': 'popup', 'minutes': 10}
-        ]
-      }
-    };
-    console.log(summary);
+    if(attendees){
+      var event = {
+        'summary': summary,
+        'location': location,
+        'start': {
+          'dateTime': startTime.format(),
+          'timeZone': 'America/New_York'
+        },
+        'end': {
+          'dateTime': endTime.format(),
+          'timeZone': 'America/New_York'
+        },
+         'attendees': invitees,
+        'reminders': {
+          'useDefault': false,
+          'overrides': [
+            {'method': 'email', 'minutes': 24 * 60},
+            {'method': 'popup', 'minutes': 10}
+          ]
+        }
+      };
+    }else{
+      var event = {
+        'summary': summary,
+        'location': location,
+        'start': {
+          'dateTime': startTime.format(),
+          'timeZone': 'America/New_York'
+        },
+        'end': {
+          'dateTime': endTime.format(),
+          'timeZone': 'America/New_York'
+        },
+        'reminders': {
+          'useDefault': false,
+          'overrides': [
+            {'method': 'email', 'minutes': 24 * 60},
+            {'method': 'popup', 'minutes': 10}
+          ]
+        }
+      };  
+    }
     console.log(event);
+    
+    database.ref('pending-events/').orderByChild('id').equalTo(key).once('value').then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        //remove each child
+        database.ref('pending-events/').child(childSnapshot.key).remove();
+      });
+    });
     addUpcomingEvent(event);
+  }else {
+    console.log("You do not have permission to edit calendar!");
   } 
+}
+
+// Function handles the deletion of records
+  $("body").on("click", "#delete", function(e){
+    e.preventDefault();
+    //if(currentStatus) {
+    if(calOwner === currentUser) {  
+      var key = $(this).attr("data-key");
+      database.ref('pending-events/').orderByChild('id').equalTo(key).once('value').then(function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+          //remove each child
+          database.ref('pending-events/').child(childSnapshot.key).remove();
+        });
+      });
+    }else {
+        $("#message").text("You do not have permission to edit calendar!");
+        console.log("You do not have permission to edit calendar!");
+    }  
+  });
+
+  // Function handles the editing of records
+  $("body").on("click", "#editEvent", function(e){
+    e.preventDefault();
+    console.log("hi");
+    if(calOwner === currentUser) {
+      $("#update").show();
+      console.log("hi");
+      var key = $(this).attr("data-key");
+      database.ref('pending-events/').orderByChild("id").equalTo(key).once('value').then(function(snapshot){
+          var data = Object.values(snapshot.val())[0]; 
+          var dataKey = Object.keys(snapshot.val())[0];
+         
+          $("#summary").val(data.summary);
+          $("#eventLocation").val(data.location);
+          $("#startTime").val(moment(data.startTime,"X").format("YYYY/MM/DD HH:mm"));
+          $("#endTime").val(moment(data.endTime, "X").format("YYYY/MM/DD HH:mm"));
+          $("#attendees").val(data.attendees);
+          $("#update").attr("data-id", dataKey);
+      });
+    }else {
+       
+       $("#message").text("You do not have permission to edit calendar!");
+    }    
+  });  
+
+  $("#update").on("click", function(e) {
+        e.preventDefault();
+        if(currentStatus){
+          
+          summary = $("#summary").val().trim();
+          location = $("#eventLocation").val().trim();
+          startTime = new Date($("#startTime").val().trim());
+          var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
+          endTime = new Date($("#endTime").val().trim());
+          var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
+          attendees = $("#attendees").val().trim();
+          var eventId = $(this).attr("data-id");
+          database.ref('pending-events/').child(eventId).update({summary:summary, location:location, startTime:formattedStartDate, endTime:formattedEndDate, attendees:attendees, currentUser: currentUser});
+          
+          //Clear the input fields after data is added to database
+          $("#summary").val("");
+          $("#eventLocation").val("");
+          $("#startTime").val("");
+          $("#endTime").val("");
+          $("#attendees").val("");
+        }else {
+            $("#message").text("You do not have permission to edit calendar!");
+        }    
+    });
+
+// ----------------------------------------------------------------------------------------
+// Firebase database CRUD functions
+// Function checks for new child added to database and updates the html display    
+database.ref('pending-events/').on("child_added", function (snapshot) {
+  // storing the snapshot.val() in a variable for convenience
+  var sv = snapshot.val();
+  renderTable(sv);
+// Handle the errors
+}, function (errorObject) {
+    console.log("inside added");
+    console.log("Errors handled: " + errorObject.code);
 });
-});  
+
+// Function checks for change in child and updates the html display    
+  database.ref('pending-events/').on("child_changed", function (snapshot) {
+     database.ref('pending-events/').once('value', function(snapshot) {
+        var events = [];
+       snapshot.forEach(function(childSnapshot) {
+         var childKey = childSnapshot.key;
+         var childData = childSnapshot.val();
+         events.push(childData);
+       });
+       $("#pendingEvents").empty(); 
+       renderOnChange(events);
+    });
+   
+  // Handle the errors
+  }, function (errorObject) {
+      console.log("inside added");
+      console.log("Errors handled: " + errorObject.code);
+  });
+
+  // Function checks for deletion of child and updates the html display    
+  database.ref('pending-events/').on("child_removed", function (snapshot) {
+    database.ref('pending-events/').once('value', function(snapshot) {
+        var events = [];
+       snapshot.forEach(function(childSnapshot) {
+         var childKey = childSnapshot.key;
+         var childData = childSnapshot.val();
+         events.push(childData);
+       });
+       $("#pendingEvents").empty(); 
+       renderOnChange(events);
+    });
+    
+  // Handle the errors
+  }, function (errorObject) {
+      console.log("inside added");
+      console.log("Errors handled: " + errorObject.code);
+  });
+}); 
+// -------------------------------------------------------------------------------
+// Event CRUD functions
 
 function listUpcomingEvents() {
+  $("#event-data").empty();
   gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (new Date()).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
     'maxResults': 10,
-    'orderBy': 'startTime'
+    'orderBy': 'startTime',
   }).then(function(response) {
     var events = response.result.items;
+    console.log(events);
+    
     if (events.length > 0) {
       for (i = 0; i < events.length; i++) {
         var event = events[i];
         var when = event.start.dateTime;
+        var id = event.id;
+        var owner = event.creator.email;
+        var loc = event.location;
         if (!when) {
           when = event.start.date;
         }
-        
         var row = $("<tr>");
         var td1 = $("<td>");
         td1.text(event.summary);
         var td2 = $("<td>");
         td2.text(when);
-        row.append(td1).append(td2);
+        var td3 = $("<td>"); 
+        td3.text(event.location);
+        td3.attr("id", "location");
+        var owner = $("<span>");
+        owner.attr("cal-owner", owner);
+        owner.css("display", "none");
+        var td4 = $("<td>");
+        var btn = $("<span>");
+        btn.attr("id", "deleteEvent");
+        btn.attr("data-key", id);
+        btn.html("<i class='fa fa-trash' aria-hidden='true'>");
+        btn.addClass("btnClass");
+        var btnMap = $("<span>");
+        btnMap.html('<i class="fa fa-globe" aria-hidden="true"></i>');
+        btnMap.attr("id", "map");
+        btnMap.addClass("btnClass");
+        td4.append(btn).append(btnMap);
+        row.append(td1).append(td2).append(td3).append(owner).append(td4);
         $("#event-data").append(row);
       }
     } else {
       //appendPre('No upcoming events found.');
     }
   });
-}
-
-function splitStr(str) {
-  var strArray = str.split(",");
-  var emails = [];
-  strArray.forEach(function(item) {
-    // create an array of attendees object- email: 'value'
-    emails.push(
-      {"email": item.trim()});
-  });
-    console.log(emails);
-    return emails;
 }
 
 function addUpcomingEvent(event) {
@@ -174,8 +403,112 @@ function addUpcomingEvent(event) {
 
   request.execute(function(event) {
   console.log('Event created: ' + event.htmlLink);
-});
-
+  });
 }
 
+// ------------------------------------------------------------------------------------------------
+// DOM rendering functions
+function renderTable(sv) {
+  var row = $("<tr>");
+  var col1 = $("<td>");
+  col1.text(sv.summary);
+  col1.attr("id", "eventSummary");
+  var col2 = $("<td>");
+  col2.text(sv.location);
+  col2.attr("id", "eventLoc");
+  var col3 = $("<td>");
+  col3.text(moment(sv.startTime, "X").format("YYYY/MM/DD HH:mm"));
+  col3.attr("id", "eventStart");
+  var col4 = $("<td>");
+  col4.text(moment(sv.endTime, "X").format("YYYY/MM/DD HH:mm"));
+  col4.attr("id", "eventEnd");
+  var col5 = $("<td>");
+  col5.text(sv.currentUser);
+  col5.attr("id", "curUser");
+  var col6 = $("<td>");
+  col6.text(sv.attendees);
+  col6.attr("id", "guests");
+  //if logged in user same as calendar owner allow to add events to calendar and delete it from firebase
+  // delete, edit button deletes,edits from firebase
+  var dataButtons = $("<td>");
+  var btn = $("<span>");
+  btn.attr("id", "delete");
+  btn.html("<i class='fa fa-trash' aria-hidden='true'>");
+  btn.addClass("btnClass");
+  btn.attr("data-key", sv.id);
+  var editBtn = $("<span>");
+  editBtn.attr("id", "editEvent");
+  editBtn.html("<i class='fa fa-pencil' aria-hidden='true'></i>");
+  editBtn.addClass("btnClass");
+  editBtn.attr("data-key", sv.id);
+  var addBtn = $("<span>");
+  addBtn.attr("id", "addToCal");
+  addBtn.html('<i class="fa fa-check" aria-hidden="true"></i>');
+  addBtn.addClass("btnClass");
+  addBtn.attr("data-key", sv.id);
+  dataButtons.append(addBtn).append(btn).append(editBtn);
+  row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
+  $("#pendingEvents").append(row);  
+}
+
+function renderOnChange(data) {
+  $("#pendingEvents").empty();
+  data.forEach(function(item){
+    var row = $("<tr>");
+    var col1 = $("<td>");
+    col1.text(item.summary);
+    col1.attr("id", "eventSummary");
+    var col2 = $("<td>");
+    col2.text(item.location);
+    col2.attr("id", "eventLoc");
+    var col3 = $("<td>");
+    col3.text(moment(item.startTime, "X").format("YYYY/MM/DD HH:mm"));
+    col3.attr("id", "eventStart");
+    var col4 = $("<td>");
+    col4.text(moment(item.endTime, "X").format("YYYY/MM/DD HH:mm"));
+    col4.attr("id", "eventEnd");
+    var col5 = $("<td>");
+    col5.text(item.currentUser);
+    col5.attr("id", "curUser");
+    var col6 = $("<td>");
+    col6.text(item.attendees);
+    col6.attr("id", "guests");
+    //if logged in user same as calendar owner allow to add events to calendar and delete it from firebase
+    // delete, edit button deletes,edits from firebase
+    var dataButtons = $("<td>");
+    var btn = $("<span>");
+    btn.attr("id", "delete");
+    btn.attr("data-key", item.id);
+    btn.html("<i class='fa fa-trash' aria-hidden='true'>");
+    btn.addClass("btnClass");
+    var editBtn = $("<span>");
+    editBtn.attr("id", "editEvent");
+    editBtn.attr("data-key", item.id);
+    editBtn.html("<i class='fa fa-pencil' aria-hidden='true'></i>");
+    editBtn.addClass("btnClass");
+    var addBtn = $("<span>");
+    addBtn.attr("id", "addToCal");
+    addBtn.html('<i class="fa fa-check" aria-hidden="true"></i>');
+    addBtn.addClass("btnClass");
+    addBtn.attr("data-key", item.id);
+    dataButtons.append(addBtn).append(btn).append(editBtn);
+    row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
+    $("#pendingEvents").append(row);  
+  });  
+}
+
+// ---------------------------------------------------
+// Utility functions
+
+function splitStr(str) {
+  var strArray = str.split(",");
+  var emails = [];
+  strArray.forEach(function(item) {
+    // create an array of attendees object- email: 'value'
+    emails.push(
+      {"email": item.trim()});
+  });
+    console.log(emails);
+    return emails;
+}
 

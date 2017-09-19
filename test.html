@@ -1,0 +1,18 @@
+<body>
+<!-- AJAX response must be wrapped in the modal's root class. -->
+<div class="modal">
+  <p>Second AJAX Example!</p>
+</div>
+<!-- Normal link -->
+<a href="Google_map.html" id="manual-ajax">second example</a>
+<script>
+// Open modal in AJAX callback
+$('#manual-ajax').click(function(event) {
+  event.preventDefault();
+  $.get(this.href, function(html) {
+    $(html).appendTo('body').modal();
+  });
+});
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</body>

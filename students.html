@@ -7,6 +7,7 @@
     <title>Scheduler | Students</title>
     <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://use.fontawesome.com/c4965b9a48.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:900" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" type="text/css">
     <!-- Compressed JavaScript -->
@@ -69,7 +70,6 @@
                     hidden in the middle of text.</p>
             </div>
         </div>
-        <!-- <iframe src="https://calendar.google.com/calendar/embed?src=priya.balakrishnan%40gmail.com&ctz=America/New_York" style="border: 0" width="auto" height="600px" frameborder="0" scrolling="no"></iframe> -->
     </div>
     <div class="medium-4 small-12 column">
         <div class="card">
@@ -88,7 +88,7 @@
                     <label>Email
                       <input type="email" id="email" placeholder="Enter email">
                     </label>
-                    <label>Image Url
+                    <label>Avatar
                       <input type="url" id="imageUrl" placeholder="Enter image url">
                     </label>
                     <label>Bio
@@ -96,13 +96,15 @@
                     </label>
                     <fieldset class="fieldset">
                       <legend>Role</legend>
-                      <input type="radio" name="role" value="Instructor" id="roleInstructor" required><label for="roleInstructor">Instructor</label>
-                      <input type="radio" name="role" value="TA" id="roleTA"><label for="roleTA">TA</label>
-                      <input type="radio" name="role" value="Student" id="roleStudent"><label for="roleStudent">Student</label>
-                      <input type="radio" name="role" value="Career Services" id="roleServices"><label for="roleServices">Career Services</label>
+                      <input type="radio" name="role" value="Instructor" id="Instructor" required><label for="Instructor">Instructor</label>
+                      <input type="radio" name="role" value="TA" id="TA"><label for="TA">TA</label>
+                      <input type="radio" name="role" value="Student" id="Student"><label for="Student">Student</label>
+                      <input type="radio" name="role" value="CareerServices" id="CareerServices"><label for="roleServices">Career Services</label>
                     </fieldset>
                     <input type="submit" class="button" value="Submit" id="addUser">
+                    <button class="button" id="update"><i class='fa fa-pencil' aria-hidden='true'></i> Update</button><br><span id="message"></span>
                   </form> 
+                  <!-- <span id="message"></span> -->
         </div>
     </div>
 </div>

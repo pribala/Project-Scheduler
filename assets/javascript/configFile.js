@@ -11,17 +11,18 @@ firebase.initializeApp(config);
 
 //Google sign in functionality
 var provider = new firebase.auth.GoogleAuthProvider();
-	
 $(document).ready(function() { 
-	var status = false; 	
+	var status = false; 
+	var user = {};
+	var userData = {};	
   	// Sign in button
   	$("#signIn").click(function(e) {
   		e.preventDefault();
 	  	// If user is not logged in status is false, login user
 	  	if(!status){
-	      firebase.auth().signInWithRedirect(provider);
+	      	firebase.auth().signInWithRedirect(provider);
 	    }else {
-	      firebase.auth().signOut().then(function() {
+	      	firebase.auth().signOut().then(function() {
 		      // Sign-out successful.
 		      status = false;
 		      $("#signIn").text("Login");
@@ -41,13 +42,12 @@ $(document).ready(function() {
 	      $("#signIn").text("Signout");
 	    }
 	    // The signed-in user info.
-	    var user = result.user;
-	    //console.log(user.email);
+	    user = result.user;
 	    //Use local storage for storing logged in user email
 	    // Clear absolutely everything stored previously in localStorage
-	    localStorage.clear();
+	    // localStorage.clear();
 	    // Store the user email into localStorage
-        localStorage.setItem("current-user", user.email);
+        //sessionStorage.setItem("current-user", user.email);
 	 	}).catch(function(error) {
 	      // Handle Errors here.
 	      var errorCode = error.code;
@@ -59,15 +59,18 @@ $(document).ready(function() {
 	      console.log(email);
 	      // The firebase.auth.AuthCredential type that was used.
 	      var credential = error.credential;
-	      console.log(credential);
+	      console.log(credential)
 	});
 
 	$("#students").on("click", function(e){
 		e.preventDefault();
-		location.href = "students.html?"+localStorage.getItem("current-user");
+		sessionStorage.clear();
+		userData['status'] = status;
+	    userData['currentUser'] = user.email;
+	    sessionStorage.setItem('userData', JSON.stringify(userData));
+		//location.href = "students.html?"+localStorage.getItem("current-user");
+		//location.href = "students.html?"+user.email;
+		//location.href = "students.html?"+status;
+		location.href = "users.html";
 	}); 	
-	 	
-     //  // And display that name for the user using "localStorage.getItem"
-      // console.log(localStorage.getItem("current-user"));
-     // 
 });
