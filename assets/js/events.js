@@ -5,7 +5,7 @@ $(document).ready(function(){
     var location = "";
     var startTime ="";
     var endTime = "";
-   
+    var eventsFor = "";
     var attendees = "";
     var invitees = "";
     
@@ -37,12 +37,12 @@ $(document).ready(function(){
     //else add event into calendar
 
     summary = $("#summary").val().trim();
-    location = $("#eventLocation").val().trim();
+    location = $("#autocomplete").val().trim();
     startTime = new Date($("#startTime").val().trim());
-    var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
+    var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm A").unix();
     endTime = new Date($("#endTime").val().trim());
-    var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
-    
+    var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm A").unix();
+    eventsFor = calOwner;
     //datetimes must be in this format YYYY-MM-DDTHH:MM:SS.MMM+HH:MM
     ////So that's year, month, day, the letter T, hours, minutes, seconds, miliseconds, + or -, timezoneoffset in hours and minutes
     attendees = $("#attendees").val().trim();
@@ -58,6 +58,7 @@ $(document).ready(function(){
         endTime: formattedEndDate,
         attendees: attendees,
         currentUser: currentUser,
+        eventsFor: eventsFor,
         id: myKey
       });
       //Clear the input fields after data is added to database
@@ -116,7 +117,7 @@ $(document).ready(function(){
       console.log(event);
       //Clear the input fields after data is added to database
       $("#summary").val("");
-      $("#eventLocation").val("");
+      $("#autocomplete").val("");
       $("#startTime").val("");
       $("#endTime").val("");
       $("#attendees").val("");
@@ -126,16 +127,21 @@ $(document).ready(function(){
 
   $("body").on("click", "#deleteEvent", function(e){
     e.preventDefault();
-    var eventId = $(this).attr("data-key");
-    var request = gapi.client.calendar.events.delete({
-    'calendarId': 'primary',
-    'eventId': eventId,
-    'sendNotifications': true
-  });
+    if(currentUser === calOwner){
+      var calendarId = calOwner;
+      var eventId = $(this).attr("data-key");
+      var request = gapi.client.calendar.events.delete({
+      'calendarId': calendarId,
+      'eventId': eventId,
+      'sendNotifications': true
+      });
 
-  request.execute(function(event) {
-  console.log('Event deleted');
-  });
+      request.execute(function(event) {
+      Materialize.toast("Event deleted!", 4000);
+    });
+  }else{
+      Materialize.toast("Sign In to edit user details!", 4000);
+  }    
 });
 
 // -------------------------------------------------------------------
@@ -157,7 +163,6 @@ function addAnEvent(key) {
     endTime = moment($("#eventEnd").text().trim());
     attendees = $("#guests").text().trim();
     invitees = splitStr(attendees);
-
     console.log("same user");
     // Add the new event to the Google Calendar
     if(attendees){
@@ -212,7 +217,7 @@ function addAnEvent(key) {
     });
     addUpcomingEvent(event);
   }else {
-    console.log("You do not have permission to edit calendar!");
+     Materialize.toast("You do not have permission to edit calendar!", 4000);
   } 
 }
 
@@ -229,8 +234,7 @@ function addAnEvent(key) {
         });
       });
     }else {
-        $("#message").text("You do not have permission to edit calendar!");
-        console.log("You do not have permission to edit calendar!");
+      Materialize.toast("You do not have permission to edit calendar!", 4000);
     }  
   });
 
@@ -248,14 +252,13 @@ function addAnEvent(key) {
          
           $("#summary").val(data.summary);
           $("#eventLocation").val(data.location);
-          $("#startTime").val(moment(data.startTime,"X").format("YYYY/MM/DD HH:mm"));
-          $("#endTime").val(moment(data.endTime, "X").format("YYYY/MM/DD HH:mm"));
+          $("#startTime").val(moment(data.startTime,"X").format("YYYY/MM/DD HH:mm A"));
+          $("#endTime").val(moment(data.endTime, "X").format("YYYY/MM/DD HH:mm A"));
           $("#attendees").val(data.attendees);
           $("#update").attr("data-id", dataKey);
       });
     }else {
-       
-       $("#message").text("You do not have permission to edit calendar!");
+      Materialize.toast("You do not have permission to edit calendar!", 4000); 
     }    
   });  
 
@@ -264,23 +267,23 @@ function addAnEvent(key) {
         if(currentStatus){
           
           summary = $("#summary").val().trim();
-          location = $("#eventLocation").val().trim();
+          location = $("#autocomplete").val().trim();
           startTime = new Date($("#startTime").val().trim());
-          var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm").unix();
+          var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm A").unix();
           endTime = new Date($("#endTime").val().trim());
-          var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm").unix();
+          var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm A").unix();
           attendees = $("#attendees").val().trim();
           var eventId = $(this).attr("data-id");
           database.ref('pending-events/').child(eventId).update({summary:summary, location:location, startTime:formattedStartDate, endTime:formattedEndDate, attendees:attendees, currentUser: currentUser});
           
           //Clear the input fields after data is added to database
           $("#summary").val("");
-          $("#eventLocation").val("");
+          $("#autocomplete").val("");
           $("#startTime").val("");
           $("#endTime").val("");
           $("#attendees").val("");
         }else {
-            $("#message").text("You do not have permission to edit calendar!");
+            Materialize.toast("You do not have permission to edit calendar!", 4000);
         }    
     });
 
@@ -340,8 +343,10 @@ database.ref('pending-events/').on("child_added", function (snapshot) {
 
 function listUpcomingEvents() {
   $("#event-data").empty();
+  var calendarId = sessionStorage.getItem("calOwner");
   gapi.client.calendar.events.list({
-    'calendarId': 'primary',
+    //'calendarId': 'primary',
+    'calendarId': calendarId,
     'timeMin': (new Date()).toISOString(),
     'showDeleted': false,
     'singleEvents': true,
@@ -350,7 +355,9 @@ function listUpcomingEvents() {
   }).then(function(response) {
     var events = response.result.items;
     console.log(events);
-    
+    var h5 = $("<h5>");
+        h5.text(calendarId).attr("style","font-weight:bold");
+       $("#owner").append(h5);
     if (events.length > 0) {
       for (i = 0; i < events.length; i++) {
         var event = events[i];
@@ -382,27 +389,30 @@ function listUpcomingEvents() {
         btnMap.html('<i class="fa fa-globe" aria-hidden="true"></i>');
         btnMap.attr("id", "map");
         btnMap.addClass("btnClass");
+        btnMap.addClass("mapBtn");
         td4.append(btn).append(btnMap);
         row.append(td1).append(td2).append(td3).append(owner).append(td4);
         $("#event-data").append(row);
       }
     } else {
-      //appendPre('No upcoming events found.');
+      Materialize.toast("No upcoming events found.", 4000);
     }
   });
 }
 
 function addUpcomingEvent(event) {
   console.log(event);
-        
+  var calendarId = sessionStorage.getItem("calOwner");       
   var request = gapi.client.calendar.events.insert({
-    'calendarId': 'primary',
+    //'calendarId': 'primary',
+    'calendarId': calendarId,
     'resource': event,
     'sendNotifications': true
   });
 
   request.execute(function(event) {
   console.log('Event created: ' + event.htmlLink);
+  Materialize.toast("Event created!", 4000);
   });
 }
 
@@ -417,10 +427,10 @@ function renderTable(sv) {
   col2.text(sv.location);
   col2.attr("id", "eventLoc");
   var col3 = $("<td>");
-  col3.text(moment(sv.startTime, "X").format("YYYY/MM/DD HH:mm"));
+  col3.text(moment(sv.startTime, "X").format("YYYY/MM/DD HH:mm A"));
   col3.attr("id", "eventStart");
   var col4 = $("<td>");
-  col4.text(moment(sv.endTime, "X").format("YYYY/MM/DD HH:mm"));
+  col4.text(moment(sv.endTime, "X").format("YYYY/MM/DD HH:mm A"));
   col4.attr("id", "eventEnd");
   var col5 = $("<td>");
   col5.text(sv.currentUser);
@@ -447,8 +457,10 @@ function renderTable(sv) {
   addBtn.addClass("btnClass");
   addBtn.attr("data-key", sv.id);
   dataButtons.append(addBtn).append(btn).append(editBtn);
-  row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
-  $("#pendingEvents").append(row);  
+  if(sv.eventsFor === sessionStorage.getItem("calOwner")){
+    row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
+    $("#pendingEvents").append(row);  
+  }  
 }
 
 function renderOnChange(data) {
@@ -462,10 +474,10 @@ function renderOnChange(data) {
     col2.text(item.location);
     col2.attr("id", "eventLoc");
     var col3 = $("<td>");
-    col3.text(moment(item.startTime, "X").format("YYYY/MM/DD HH:mm"));
+    col3.text(moment(item.startTime, "X").format("YYYY/MM/DD HH:mm A"));
     col3.attr("id", "eventStart");
     var col4 = $("<td>");
-    col4.text(moment(item.endTime, "X").format("YYYY/MM/DD HH:mm"));
+    col4.text(moment(item.endTime, "X").format("YYYY/MM/DD HH:mm A"));
     col4.attr("id", "eventEnd");
     var col5 = $("<td>");
     col5.text(item.currentUser);
@@ -492,8 +504,10 @@ function renderOnChange(data) {
     addBtn.addClass("btnClass");
     addBtn.attr("data-key", item.id);
     dataButtons.append(addBtn).append(btn).append(editBtn);
-    row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
-    $("#pendingEvents").append(row);  
+    if(item.eventsFor === sessionStorage.getItem("calOwner")){
+      row.append(col1).append(col2).append(col3).append(col4).append(col5).append(col6).append(dataButtons);
+      $("#pendingEvents").append(row);  
+    }
   });  
 }
 
@@ -511,4 +525,3 @@ function splitStr(str) {
     console.log(emails);
     return emails;
 }
-

@@ -1,157 +1,118 @@
-<!doctype html>
-<html class="no-js" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Scheduler | Students</title>
-    <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Cinzel+Decorative:900" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" type="text/css">
-    <!-- Compressed JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.1.1/motion-ui.min.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rutgers Scheduler</title>
+    <!-- CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Exo+2:600" rel="stylesheet">
 </head>
 
 <body>
-
-    <header>
-
-        <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
-            <button class="menu-icon" type="button" data-toggle="example-menu"></button>
-            <div class="title-bar-title">Menu</div>
-        </div>
-
-        <div class="top-bar" id="example-menu">
-            <div class="top-bar-left">
-                <ul class="dropdown menu" data-dropdown-menu>
-                    <li class="menu-text">SCHEDULER</li>
-                    <li class="is-active"><a href="index.html">Home</a> </li>
-                    <li><a href="instructors.html">Instructors</a></li>
-                    <li><a href="students.html">Students</a></li>
-                    <li><a href="carrerservices.html">Career Service</a></li>
-                </ul>
-            </div>
-            <div class="top-bar-right">
-                <ul class="menu">
-                    <li><input type="search" placeholder="Search"></li>
-                    <li><button type="button" class="button">Search</button></li>
-                </ul>
-            </div>
-        </div>
-    </header>
-
-    <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit>
-        <div class="orbit-wrapper">
-            <div class="orbit-controls">
-                <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-                <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
-            </div>
-            <ul class="orbit-container">
-                <li class="is-active orbit-slide">
-                    <figure class="orbit-figure">
-                        <img class="orbit-image" src="https://fernandofranzini.files.wordpress.com/2017/08/cover-image.png" alt="Space">
-                        <figcaption class="orbit-caption">Space, the final frontier.</figcaption>
-                    </figure>
-                </li>
-                <li class="orbit-slide">
-                    <figure class="orbit-figure">
-                        <img class="orbit-image" src="https://atrium.rutgers.edu/sites/atrium.rutgers.edu/files/Slide%204_Atrium%20Exterior%20Wide.jpg"
-                            alt="Space">
-                        <figcaption class="orbit-caption">Lets Rocket!</figcaption>
-                    </figure>
-                </li>
-                <li class="orbit-slide">
-                    <figure class="orbit-figure">
-                        <img class="orbit-image" src="https://edsurge.imgix.net/uploads/post/image/9863/shutterstock_548331460-1496728830.jpg?auto=compress%2Cformat&w=2000&h=810&fit=crop"
-                            alt="Space">
-                        <figcaption class="orbit-caption">Encapsulating</figcaption>
-                    </figure>
-                </li>
-                <li class="orbit-slide">
-                    <figure class="orbit-figure">
-                        <img class="orbit-image" src="https://www.trilogyed.com/images/logo-light.svg" alt="Space">
-                        <figcaption class="orbit-caption">Outta This World</figcaption>
-                    </figure>
-                </li>
+    <!-- <nav class="#2E3C3A" role="navigation"> -->
+    <nav>
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo">Scheduler</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html" type="button" id="home">Home</a></li>
+                <li><a type="button" class="button" id="users">Users</a></li>
+                <li><a class="waves-effect waves-light btn" type="button" class="button" id="signIn">LOGIN</a></li>
             </ul>
-        </div>
-        <!-- <nav class="orbit-bullets">
-                  <button class="is-active" data-slide="0"><span class="show-for-sr">First slide details.</span><span class="show-for-sr">Current Slide</span></button>
-                  <button data-slide="1"><span class="show-for-sr">Second slide details.</span></button>
-                  <button data-slide="2"><span class="show-for-sr">Third slide details.</span></button>
-                  <button data-slide="3"><span class="show-for-sr">Fourth slide details.</span></button>
-                </nav> -->
-    </div>
 
-    <br>
-    <div class="row">
-        <div class="medium-8 columns">
-            <div class="card">
-                <div class="card-divider">
-                    <h4>I'm featured</h4>
-                    <hr>
-                </div>
-                <div class="card-section">
-                    <p>
-                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature
-                        from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney
-                        College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum
-                        passage, and going through the cites of the word in classical literature, discovered the undoubtable
-                        source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The
-                        Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of
-                        ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
-                        amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s
-                        is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et
-                        Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions
-                        from the 1914 translation by H. Rackham.
-                    </p>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="index.html" class="waves-effect waves-light btn" type="button" id="users">Home</a></li>
+                <li><a class="waves-effect waves-light btn" type="button" class="button" id="users">Users</a></li>
+                <li><a class="waves-effect waves-light btn" type="button" class="button" id="signIn">LOGIN</a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+    <div id="banner">
+        <div id="index-banner" class="parallax-container">
+            <div class="section no-pad-bot">
+                <div class="container">
+                    <br><br>
+                    <div class="carousel carousel-slider center" data-indicators="true">
+                        <div class="carousel-item red white-text" href="#one!">
+                            <p class="car_p">"Seeing much, suffering much, and studying much, are the three pillars of learning"</p>
+                        </div>
+                        <div class="carousel-item amber white-text" href="#two!">
+                            <p class="car_p" style="color:black">"Push yourself because no one else is going to do it for you"</p>
+                        </div>
+                        <div class="carousel-item green white-text" href="#three!">
+                            <p class="car_p">"Nothing is impossible. The word itself says 'I’m Possible'"</p>
+                        </div>
+                        <div class="carousel-item blue white-text" href="#four!">
+                            <p class="car_p"> "When you feel like quitting, think about why you started"</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="medium-4 columns">
-            <div class="card">
-                <div class="card-divider">
-                    <h4>Tech News</h4>
-                    <hr>
+
+        <div class="container">
+            <div class="row">
+                <div class="col s8 t_news">
+                    <!-- Promo Content 1 goes here -->
+                    <div>
+                        <div>
+                            <p class="desc">About Rutgers Bootcamp</p>
+                            <hr>
+                        </div>
+                        <div>
+                            <p>
+                                This program is right for anyone who is intellectually curious, ready for a career change or advancement, and above all—hard
+                                working.
+                            </p>
+                            <ul class="collection">
+                                <li class="collection-item">Individuals looking to change companies or careers—or shift from a non-technical to technical
+                                    role in their company.</li>
+                                <li class="collection-item">Individuals who want to freelance and supplement their current income—or engage more productively
+                                    with their job.</li>
+                                <li class="collection-item">Individuals working to acquire the skills to go “all in” on an entrepreneurial idea and build
+                                    their product.</li>
+                                <li class="collection-item">Individuals with a hunger for additional knowledge or wanting to enhance their skills while
+                                    in college</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-section">
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-                        in some form, by injected humour, or randomised words which don't look even slightly believable.
-                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing
-                        hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-                        chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of
-                        over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum
-                        which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected
-                        humour, or non-characteristic words etc.</p>
+                <div class="col s4 t_news">
+                    <!-- Promo Content 2 goes here -->
+                    <fieldset class="fieldset brd">
+                        <legend class="fw">Tech News</legend>
+                        <div>
+                            <div id="news">
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
     </div>
-    <footer>
-        <div class="row expanded">
-            <div class="medium-6 columns">
-                <ul class="menu">
-                    <li><a href="#">Legal</a></li>
-                    <li><a href="#">Partner</a></li>
-                    <li><a href="#">Explore</a></li>
-                </ul>
-            </div>
-            <div class="medium-6 columns">
-                <ul class="menu align-right">
-                    <li class="menu-text-1">Copyright © 2017 kin,priya,mansi</li>
-                </ul>
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container center">
+                © 2017 Copyright Scheduler
+                <a class="grey-text text-lighten-4 right" href="#!"></a>
             </div>
         </div>
     </footer>
-    <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="assets/javascript/app.js"></script>
-    <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
-    <script>
-        $(document).foundation();
-    </script>
+
+    <!-- Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.js"></script>
+    <script src="assets/js/init.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/techcrunchapi.js"></script>
+    <script src="assets/js/carousel.js"></script>
+    <!-- <script src="assets/js/app.js"></script>  -->
 </body>
 
 </html>

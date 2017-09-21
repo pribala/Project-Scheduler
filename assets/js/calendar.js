@@ -1,4 +1,3 @@
-
 // Client ID and API key from the Developer Console
 var CLIENT_ID = '545118572679-qn8k1nb5d0udfc107r5rbevakgf8l6lb.apps.googleusercontent.com';
 

@@ -14,9 +14,7 @@ $(document).ready(function(){
   var imageUrl = "";
   var bio ="";
   var role = "";
-  // var url = window.location.search;
-  // var currentStatus = url ? url.split('?')[1] : window.location.search.slice(1);
-  // console.log(currentStatus);
+  
   if(storedData){
     if (storedData.status && storedData.currentUser) {
       console.log(storedData);
@@ -24,20 +22,19 @@ $(document).ready(function(){
       currentStatus = storedData.status;
       console.log("user:"+currentUser);
       console.log("status:"+currentStatus);
-    }else{
+    }
+    else{
       location.href = "login.html";
     }
   }else{
     location.href = "login.html";
   }  
-  //var currentUser = sessionStorage.getItem("current-user");
-  //currentStatus = false;      
+  
   // Add new value to database when add user button is clicked
   $("#addUser").on("click", function (event) {
     event.preventDefault();
     // Check if user is logged in before allowing to add to the database 
-    //var userImage = "assets/images/"+ $("#imageUrl").val().trim();
-    
+       
     if(currentStatus) { 
       firstName = capitalizeStr($("#firstName").val().trim()),
       lastName = capitalizeStr($("#lastName").val().trim()),  
@@ -58,26 +55,20 @@ $(document).ready(function(){
       });
                                 
       // Clear the input fields after data is added to database
-      $("#message").val("");
       $("#firstName").val("");
       $("#lastName").val("");
       $("#email").val("");
       $("#imageUrl").val("");
       $("#bio").val("");
-      $("#role").val("");
+      $('input[type="radio"]').prop("checked", false);
     }else {
-      $("#message").text("Sign In to add a user!");
+      Materialize.toast("Sign In to add a user!", 4000);
     }  
   });
 
 // Function handles the deletion of records
   $("body").on("click", "#delete", function(e){
     e.preventDefault();
-    // var yourPopoverContent = 'You have to be signed in to delete!';
-    //   $(this).popover({
-    //       content : yourPopoverContent,
-    //       placement: 'left'      
-    //   });
     if(currentStatus) {
       var key = $(this).attr("data-key");
       database.ref('users/').orderByChild('id').equalTo(key).once('value').then(function(snapshot) {
@@ -87,23 +78,16 @@ $(document).ready(function(){
         });
       });
     }else {
-       // var $this = $(this);
-       // $this.popover('show');
-       // setTimeout(function() {$this.popover('dispose')},2000);
-       $("#message").text("Sign In to delete a user!");
+      Materialize.toast("Sign In to delete a user!", 4000);
     }  
   });
 
   // Function handles the editing of records
   $("body").on("click", "#edit", function(e){
     e.preventDefault();
-    // var yourPopoverContent = 'You have to be signed in to edit!';
-    //     $(this).popover({
-    //         content : yourPopoverContent,
-    //         placement: 'left'      
-    // });
     if(currentStatus) {
       $("#update").show();
+      $("#addUser").hide();
       var key = $(this).attr("data-key");
       database.ref('users/').orderByChild("id").equalTo(key).once('value').then(function(snapshot){
           var data = Object.values(snapshot.val())[0]; 
@@ -113,16 +97,13 @@ $(document).ready(function(){
           $("#lastName").val(data.lastName);
           $("#email").val(data.email);
           $("#imageUrl").val(data.imageUrl);
-          var userRole = $("input[type=radio]").val();
-          console.log(userRole);
+          $("#bio").val(data.bio);
+          var userRole = data.role;
           $(eval("'#"+userRole+"'")).prop("checked", true);
           $("#update").attr("data-id", dataKey);
       });
     }else {
-       // var $this = $(this);
-       // $this.popover('show');
-       // setTimeout(function() {$this.popover('dispose')},2000);
-       $("#message").text("Sign In to edit a user!");
+      Materialize.toast("Sign In to edit a user!", 4000);
     }    
   });  
 
@@ -134,17 +115,32 @@ $(document).ready(function(){
           database.ref('users/').child(userId).update({firstName:firstName, lastName:lastName, email:email, imageUrl:imageUrl, bio:bio, role:role});
           
           // Clear the input fields after data is added to database
-          $("#message").val("");
           $("#firstName").val("");
           $("#lastName").val("");
           $("#email").val("");
           $("#imageUrl").val("");
           $("#bio").val("");
-          $("#role").val("");
+          $('input[type="radio"]').prop("checked", false);
+          $("#update").hide();
+          $("#addUser").show();
       }else {
-            $("#message").text("Sign In to edit user details!");
+          Materialize.toast("Sign In to edit user details!", 4000);
      }    
-    });
+    });;
+
+  $("#cancel").on("click", function(e){
+      e.preventDefault();
+      // Clear the input fields after data is added to database
+      $("#firstName").val("");
+      $("#lastName").val("");
+      $("#email").val("");
+      $("#imageUrl").val("");
+      $("#bio").val("");
+      $('input[type="radio"]').prop("checked", false);
+      $("#update").hide();
+      $("#addUser").show();
+   }); 
+  
   // -----------------------------------------------------------------------------
   // Database CRUD operations
   // General function to capture data entered in form 
@@ -176,7 +172,8 @@ $(document).ready(function(){
          var childData = childSnapshot.val();
          users.push(childData);
        });
-       $("#data-panel").empty(); 
+       $("#student-panel").empty();
+       $("staff-panel").empty();  
        renderOnChange(users);
     });
    
@@ -195,7 +192,8 @@ $(document).ready(function(){
          var childData = childSnapshot.val();
          users.push(childData);
        });
-       $("#data-panel").empty(); 
+       $("#student-panel").empty();
+       $("#staff-panel").empty();
        renderOnChange(users);
     });
     
@@ -222,12 +220,12 @@ function renderData(sv) {
     var btn = $("<span>");
     btn.attr("id", "delete");
     btn.html("<i class='fa fa-trash' aria-hidden='true'>");
-    btn.addClass("btn waves-effect waves-light left");
+    btn.addClass("btn waves-effect waves-light");
     btn.attr("data-key", sv.id);
     var editBtn = $("<span>");
     editBtn.attr("id", "edit");
     editBtn.html("<i class='fa fa-pencil' aria-hidden='true'></i>");
-    editBtn.addClass("btn waves-effect waves-light left");
+    editBtn.addClass("btn waves-effect waves-light");
     editBtn.attr("data-key", sv.id);
     dataButtons.append(btn).append(editBtn);
     col.append(image).append(heading).append(dataButtons);
@@ -239,8 +237,6 @@ function renderData(sv) {
   }
 
 function renderOnChange(data) {
-  
-  //$("#data-panel").empty();
   $("#student-panel").empty();
   $("#staff-panel").empty();
   data.forEach(function(item){
@@ -278,8 +274,7 @@ $("body").on("click", "#userImg", function(){
     var user =$(this).attr("data-email");
     console.log(user);
     sessionStorage.setItem("calOwner", user);
-    //location.href = "display-events.html?"+user;
-    location.href = "display-events.html";
+    location.href = "calender.html";
 });
 
 // Utility functions
