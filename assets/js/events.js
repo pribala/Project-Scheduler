@@ -241,9 +241,10 @@ function addAnEvent(key) {
   // Function handles the editing of records
   $("body").on("click", "#editEvent", function(e){
     e.preventDefault();
-    console.log("hi");
+    //console.log("hi");
     if(calOwner === currentUser) {
       $("#update").show();
+      $("addEvent").hide(); 
       //console.log("hi");
       var key = $(this).attr("data-key");
       database.ref('pending-events/').orderByChild("id").equalTo(key).once('value').then(function(snapshot){
@@ -277,7 +278,8 @@ function addAnEvent(key) {
           attendees = $("#attendees").val().trim();
           var eventId = $(this).attr("data-id");
           database.ref('pending-events/').child(eventId).update({summary:summary, location:location, startTime:formattedStartDate, endTime:formattedEndDate, attendees:attendees, currentUser: currentUser});
-          
+          $("#update").hide();
+          $("#addEvent").show();  
           //Clear the input fields after data is added to database
           $("#summary").val("");
           $("#autocomplete").val("");
