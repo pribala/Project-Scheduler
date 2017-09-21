@@ -251,7 +251,7 @@ function addAnEvent(key) {
           var dataKey = Object.keys(snapshot.val())[0];
          
           $("#summary").val(data.summary);
-          $("#eventLocation").val(data.location);
+          $("#autocomplete").val(data.location);
           $("#startTime").val(moment(data.startTime,"X").format("YYYY/MM/DD HH:mm A"));
           $("#endTime").val(moment(data.endTime, "X").format("YYYY/MM/DD HH:mm A"));
           $("#attendees").val(data.attendees);
