@@ -244,7 +244,7 @@ function addAnEvent(key) {
     //console.log("hi");
     if(calOwner === currentUser) {
       $("#update").show();
-      $("addEvent").hide(); 
+      $("#addEvent").hide(); 
       //console.log("hi");
       var key = $(this).attr("data-key");
       database.ref('pending-events/').orderByChild("id").equalTo(key).once('value').then(function(snapshot){
