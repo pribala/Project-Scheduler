@@ -15,6 +15,29 @@
 </head>
 
 <body>
+    <style>
+	.holder { 
+  background-color:transparent;
+  width:auto;
+  height:400px;
+  overflow:hidden;
+  padding:10px;
+  font-family:Helvetica;
+}
+.holder ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  position: relative;
+}
+.holder ul li {
+  padding:10px 0px;
+}
+.holder ul li a {
+  color:darkred;
+  text-decoration:none;
+}
+</style>
     <!-- <nav class="#2E3C3A" role="navigation"> -->
     <nav>
         <div class="nav-wrapper container">
@@ -87,9 +110,11 @@
                     <!-- Promo Content 2 goes here -->
                     <fieldset class="fieldset brd">
                         <legend class="fw">Tech News</legend>
-           
+                            <div class="holder">
+  							 <ul id="ticker01">
                             <div id="news"> </div>
-    
+                        </ul>
+                        </div>
                     </fieldset>
                 </div>
             </div>
