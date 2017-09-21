@@ -7,7 +7,7 @@ var queryURL = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=latest&
  console.log(response.articles[0].title);
  console.log(response.articles[0].description);
  console.log(response.articles[0].url);
- for (var i = 0; i < 20; i++) {
+ for (var i = 0; i <5; i++) {
  var title = $("<p>");
  title.text(response.articles[i].description);
  title.css("text-align", "justify");
