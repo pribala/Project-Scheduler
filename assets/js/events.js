@@ -244,7 +244,7 @@ function addAnEvent(key) {
     console.log("hi");
     if(calOwner === currentUser) {
       $("#update").show();
-      console.log("hi");
+      //console.log("hi");
       var key = $(this).attr("data-key");
       database.ref('pending-events/').orderByChild("id").equalTo(key).once('value').then(function(snapshot){
           var data = Object.values(snapshot.val())[0]; 
@@ -268,9 +268,11 @@ function addAnEvent(key) {
           
           summary = $("#summary").val().trim();
           location = $("#autocomplete").val().trim();
-          startTime = new Date($("#startTime").val().trim());
+          //startTime = new Date($("#startTime").val().trim());
+          startTime = $("#startTime").val().trim();  
           var formattedStartDate = moment(startTime, "YYYY/MM/DD HH:mm A").unix();
-          endTime = new Date($("#endTime").val().trim());
+          //endTime = new Date($("#endTime").val().trim());
+          endTime = $("#endTime").val().trim();  
           var formattedEndDate = moment(endTime, "YYYY/MM/DD HH:mm A").unix();
           attendees = $("#attendees").val().trim();
           var eventId = $(this).attr("data-id");
