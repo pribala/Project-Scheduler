@@ -60,7 +60,7 @@ $(document).ready(function() {
       console.log(credential)
 	});
 
-	$("#users").on("click", function(e){
+	$("#users").on("click", function(e){ 
 		if(!status){
 			Materialize.toast("Sign In to view users!", 4000);
 		}
@@ -70,5 +70,5 @@ $(document).ready(function() {
 	    userData['currentUser'] = user.email;
 	    sessionStorage.setItem('userData', JSON.stringify(userData));
 		location.href = "users.html";
-	}); 	
+	}); 
 });
