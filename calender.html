@@ -20,7 +20,7 @@
   <!--Requirement jQuery-->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link type="text/css" href="assets/css/jquery.simple-dtpicker.css" rel="stylesheet" />
-  <script type="text/javascript" src="assets/js/js-1/dtpicker.js"></script>
+  <!-- <script type="text/javascript" src="assets/js/js-1/dtpicker.js"></script> -->
 </head>
 
 <body>
@@ -90,7 +90,7 @@
           <div class="row">
             <div id="locationField" class="input-field col s12 m12">
               <i class="material-icons prefix">add_location</i>
-              <input id="autocomplete" placeholder="" onFocus="geolocate()" type="text"></input>
+              <input id="autocomplete" placeholder="" type="text"></input>
               <label for="Location" data-error="Enter event location" data-success="Perfect!">Location*</label>
             </div>
           </div>
@@ -189,7 +189,7 @@ $(function() {
 });
 </script>
 <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAisvHaLQOATArfWk-auHFJyV9wNu6Sgnc&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAisvHaLQOATArfWk-auHFJyV9wNu6Sgnc&libraries=places&callback=initMap">
 </script>
 </script>
 </body>
