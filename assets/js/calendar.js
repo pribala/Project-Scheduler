@@ -10,7 +10,7 @@ var SCOPES = 'https://www.googleapis.com/auth/calendar';
 var authorizeButton = document.getElementById('authorize-button');
 var signoutButton = document.getElementById('signout-button');
 var submitButton = document.getElementById('addEvent');
-
+var heading = document.getElementById('message');
 /**
  *  On load, called to load the auth2 library and API client library.
  */
@@ -47,11 +47,14 @@ function updateSigninStatus(isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
     submitButton.style.display ='block';
+    heading.style.display = 'none';
     listUpcomingEvents();
   } else {
     authorizeButton.style.display = 'block';
+    heading.style.display = 'block';
     signoutButton.style.display = 'none';
     submitButton.style.display = 'none';
+    $("#owner").empty();
   }
 }
 
@@ -69,4 +72,34 @@ function handleAuthClick(event) {
 function handleSignoutClick(event) {
   //event.preventDefault();
   gapi.auth2.getAuthInstance().signOut();
+}
+
+// Map function
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 8,
+      center: { lat: -34.397, lng: 150.644 }
+  });
+  var geocoder = new google.maps.Geocoder();
+
+ $("body").on('click',".mapBtn", function () {
+      var address = $(this).attr("data-loc");
+      geocodeAddress(geocoder, map,address);
+  });
+
+  //initAutocomplete();
+}
+
+function geocodeAddress(geocoder, resultsMap,address) {
+  geocoder.geocode({ 'address': address }, function (results, status) {
+      if (status === 'OK') {
+          resultsMap.setCenter(results[0].geometry.location);
+          var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+          });
+      } else {
+          Materialize.toast('Geocode was not successful for the following reason: ' + status, 4000);
+      }
+  });
 }

@@ -355,9 +355,10 @@ function listUpcomingEvents() {
   }).then(function(response) {
     var events = response.result.items;
     console.log(events);
+    $("#owner").empty();
     var h5 = $("<h5>");
-        h5.text(calendarId).attr("style","font-weight:bold");
-       $("#owner").append(h5);
+    h5.text("Name:"+calendarId).attr("style","font-weight:bold");
+    $("#owner").append(h5);
     if (events.length > 0) {
       for (i = 0; i < events.length; i++) {
         var event = events[i];
@@ -387,8 +388,9 @@ function listUpcomingEvents() {
         btn.addClass("btnClass");
         var btnMap = $("<span>");
         btnMap.html('<i class="fa fa-globe" aria-hidden="true"></i>');
-        btnMap.attr("id", "map");
         btnMap.addClass("btnClass");
+        btnMap.addClass("mapBtn");
+        btnMap.attr("data-loc", event.location);
         btnMap.addClass("mapBtn");
         td4.append(btn).append(btnMap);
         row.append(td1).append(td2).append(td3).append(owner).append(td4);

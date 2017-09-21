@@ -21,9 +21,6 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link type="text/css" href="assets/css/jquery.simple-dtpicker.css" rel="stylesheet" />
   <script type="text/javascript" src="assets/js/js-1/dtpicker.js"></script>
-
-
-</head>
 </head>
 
 <body>
@@ -48,10 +45,12 @@
   </nav>
   <!--div to display images-->
   <div class="row">
-
-    <div id="owner">
-      <h5>Name:</h5>
-    </div>
+    <div class="container col m6 offset-m1">
+      <span id="message"><h4>Sign In to Google Calendar using the Authorize menu option</h4></span>
+      <div id="owner">
+        <!-- <h5>Name:</h5> -->
+      </div>
+    </div>  
   </div>
 
   <div class="row">
@@ -136,7 +135,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="container col m7 offset-m1 abc">
+    <div class="container col m6 offset-m1 abc">
       <h5 class="ttl">UpComing Events</h5>
       <hr>
       <table class="responsive-table">
@@ -150,10 +149,10 @@
         </tbody>
       </table>
     </div>
-    <div class="conatiner col m4 offset-m1  ">
+    <div class="container col m5 offset-m1">
+      <div id="map"></div>
     </div>
   </div>
-</body>
 <footer class="page-footer">
   <div class="footer-copyright">
     <div class="container center">
@@ -175,8 +174,8 @@
 <script src="assets/js/events.js"></script>
 <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAisvHaLQOATArfWk-auHFJyV9wNu6Sgnc&libraries=places&callback=initAutocomplete"
-  async defer></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAisvHaLQOATArfWk-auHFJyV9wNu6Sgnc&libraries=places&callback=initAutocomplete"
+  async defer></script> -->
 <!--addmore email id's in form-->
 <script src="assets/js/addemail.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -187,7 +186,11 @@
 $(function() {
 	$('#datetimepicker1').datetimepicker();
 	$('#datetimepicker2').datetimepicker();
-  });
+});
+</script>
+<script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAisvHaLQOATArfWk-auHFJyV9wNu6Sgnc&callback=initMap">
+</script>
 </script>
 </body>
 
