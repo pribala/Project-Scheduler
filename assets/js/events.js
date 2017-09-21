@@ -278,14 +278,15 @@ function addAnEvent(key) {
           attendees = $("#attendees").val().trim();
           var eventId = $(this).attr("data-id");
           database.ref('pending-events/').child(eventId).update({summary:summary, location:location, startTime:formattedStartDate, endTime:formattedEndDate, attendees:attendees, currentUser: currentUser});
-          $("#update").hide();
-          $("#addEvent").show();  
+          
           //Clear the input fields after data is added to database
           $("#summary").val("");
           $("#autocomplete").val("");
           $("#startTime").val("");
           $("#endTime").val("");
           $("#attendees").val("");
+          $("#update").hide();
+          $("#addEvent").show();   
         }else {
             Materialize.toast("You do not have permission to edit calendar!", 4000);
         }    
