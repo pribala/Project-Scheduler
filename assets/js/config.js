@@ -1,12 +1,12 @@
 // Initialize firebase and use Google authentication to sign in
-var config = {
-	apiKey: "AIzaSyDmKpVmVd3N_dA4wAKrxX6L-pqxDvDXNAk",
-	authDomain: "scheduler-708c6.firebaseapp.com",
-	databaseURL: "https://scheduler-708c6.firebaseio.com",
-	projectId: "scheduler-708c6",
-	storageBucket: "",
-	messagingSenderId: "545118572679"
-};
+  var config = {
+    apiKey: "AIzaSyBcw3W-DcM65Zb0uXj3k-MW6diEZpwRNAc",
+    authDomain: "project-scheduler-f8312.firebaseapp.com",
+    databaseURL: "https://project-scheduler-f8312.firebaseio.com",
+    projectId: "project-scheduler-f8312",
+    storageBucket: "project-scheduler-f8312.appspot.com",
+    messagingSenderId: "744021836761"
+  };
 firebase.initializeApp(config);
 //Google sign in functionality
 var provider = new firebase.auth.GoogleAuthProvider();
