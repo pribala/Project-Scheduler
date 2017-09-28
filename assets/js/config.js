@@ -60,7 +60,7 @@ $(document).ready(function() {
       console.log(credential)
 	});
 
-	$("#users").on("click", function(e){
+	$(".userpage").on("click", function(e){
 		if(!status){
 			Materialize.toast("Sign In to view users!", 4000);
 		}
